@@ -266,13 +266,6 @@ body{
 <p class="section-label">Workforce Overview</p>
 <div class="stat-row">
   <div class="stat">
-    <div class="stat-ic ic-b">
-      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
-    </div>
-    <div class="stat-n">119</div>
-    <div class="stat-l">Total Employees</div>
-  </div>
-  <div class="stat">
     <div class="stat-ic ic-g">
       <svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg>
     </div>
@@ -307,135 +300,6 @@ body{
     <div class="stat-n">53</div>
     <div class="stat-l">Female</div>
   </div>
-</div>
-
-<!-- ── DEPT + ROLES ── -->
-<p class="section-label">Distribution</p>
-<div class="g32">
-
-  <!-- Department chart -->
-  <div class="card">
-    <div class="card-hd">
-      <span class="card-title">By Department</span>
-      <span class="card-count">20 depts</span>
-    </div>
-    <div class="bar-list" id="dept-bars"></div>
-  </div>
-
-  <!-- Role + Gender stacked -->
-  <div style="display:flex;flex-direction:column;gap:10px;">
-    <div class="card">
-      <div class="card-hd">
-        <span class="card-title">By Role</span>
-        <span class="card-count">6 roles</span>
-      </div>
-      <div class="bar-list" id="role-bars"></div>
-    </div>
-    <div class="card">
-      <div class="card-hd">
-        <span class="card-title">Gender</span>
-      </div>
-      <div class="donut-wrap">
-        <svg viewBox="0 0 80 80" width="80" height="80" style="flex-shrink:0;">
-          <circle cx="40" cy="40" r="30" fill="none" stroke="var(--surface-2)" stroke-width="14"/>
-          <!-- Male 66/119 = 55.5% → 207.3° → dasharray 311.02 out of 188.5*2π/360... let me compute -->
-          <!-- circumference = 2π*30 = 188.5 -->
-          <!-- male: 66/119 * 188.5 = 104.6 -->
-          <!-- female: 53/119 * 188.5 = 83.9 -->
-          <circle id="donut-male" cx="40" cy="40" r="30" fill="none"
-            stroke="var(--blue)" stroke-width="14"
-            stroke-dasharray="104.6 188.5"
-            stroke-dashoffset="47.1"
-            stroke-linecap="butt" transform="rotate(-90 40 40)"/>
-          <circle id="donut-female" cx="40" cy="40" r="30" fill="none"
-            stroke="var(--teal)" stroke-width="14"
-            stroke-dasharray="83.9 188.5"
-            stroke-dashoffset="-41.5"
-            stroke-linecap="butt" transform="rotate(-90 40 40)"/>
-          <text x="40" y="37" text-anchor="middle" font-size="13" font-weight="700" fill="var(--fg)" font-family="Inter,sans-serif">119</text>
-          <text x="40" y="51" text-anchor="middle" font-size="8" fill="var(--fg-3)" font-family="Inter,sans-serif">staff</text>
-        </svg>
-        <div class="donut-legend">
-          <div class="leg-row">
-            <div class="leg-dot" style="background:var(--blue)"></div>
-            <span class="leg-label">Male</span>
-            <span class="leg-val" style="margin-left:12px;">66</span>
-          </div>
-          <div class="leg-row">
-            <div class="leg-dot" style="background:var(--teal)"></div>
-            <span class="leg-label">Female</span>
-            <span class="leg-val" style="margin-left:12px;">53</span>
-          </div>
-          <div style="margin-top:4px;padding-top:8px;border-top:1px solid var(--border);">
-            <div class="leg-row">
-              <span style="font-size:11px;color:var(--fg-3);">Ratio M:F</span>
-              <span style="font-size:12px;font-weight:600;margin-left:auto;">55 : 45</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-</div>
-
-<!-- ── JOINING TREND ── -->
-<p class="section-label">Hiring Trend</p>
-<div class="card">
-  <div class="card-hd">
-    <span class="card-title">Staff Joined by Year</span>
-    <span class="card-count">1999 – 2026</span>
-  </div>
-  <div style="overflow-x:auto;">
-    <svg id="trend-svg" class="trend-svg" height="120" style="min-width:600px;display:block;"></svg>
-  </div>
-</div>
-
-<!-- ── DESIGNATIONS + SOCIAL ── -->
-<p class="section-label">Composition</p>
-<div class="g2">
-
-  <div class="card">
-    <div class="card-hd">
-      <span class="card-title">Top Designations</span>
-      <span class="card-count">40 total</span>
-    </div>
-    <div class="bar-list" id="desig-bars"></div>
-  </div>
-
-  <div class="card">
-    <div class="card-hd">
-      <span class="card-title">Social Category</span>
-    </div>
-    <div class="bar-list" id="cat-bars"></div>
-    <div style="margin-top:16px;padding-top:14px;border-top:1px solid var(--border);">
-      <div class="card-title" style="margin-bottom:10px;font-size:13px;">Qualification Levels</div>
-      <div class="chips">
-        <span class="chip">10th</span><span class="chip">12th</span>
-        <span class="chip">UG</span><span class="chip">PG</span>
-        <span class="chip">Doctorate</span><span class="chip">Others</span>
-      </div>
-    </div>
-  </div>
-
-</div>
-
-<!-- ── RECENT EMPLOYEES ── -->
-<p class="section-label">Recent Staff (2026 Joiners)</p>
-<div class="card" style="overflow-x:auto;">
-  <table class="emp-table" id="emp-table">
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>ID</th>
-        <th>Department</th>
-        <th>Designation</th>
-        <th>Role</th>
-        <th>Gender</th>
-      </tr>
-    </thead>
-    <tbody id="emp-body"></tbody>
-  </table>
 </div>
 
 <!-- ── BIOMETRIC ATTENDANCE ── -->
@@ -620,6 +484,129 @@ body{
     </div>
     <div class="bar-list" id="dept-hours-bars"></div>
   </div>
+</div>
+
+<!-- ── DISTRIBUTION ── -->
+<p class="section-label">Distribution</p>
+<div class="g32">
+
+  <div class="card">
+    <div class="card-hd">
+      <span class="card-title">By Department</span>
+      <span class="card-count">20 depts</span>
+    </div>
+    <div class="bar-list" id="dept-bars"></div>
+  </div>
+
+  <div style="display:flex;flex-direction:column;gap:10px;">
+    <div class="card">
+      <div class="card-hd">
+        <span class="card-title">By Role</span>
+        <span class="card-count">6 roles</span>
+      </div>
+      <div class="bar-list" id="role-bars"></div>
+    </div>
+    <div class="card">
+      <div class="card-hd">
+        <span class="card-title">Gender</span>
+      </div>
+      <div class="donut-wrap">
+        <svg viewBox="0 0 80 80" width="80" height="80" style="flex-shrink:0;">
+          <circle cx="40" cy="40" r="30" fill="none" stroke="var(--surface-2)" stroke-width="14"/>
+          <circle cx="40" cy="40" r="30" fill="none"
+            stroke="var(--blue)" stroke-width="14"
+            stroke-dasharray="104.6 188.5"
+            stroke-dashoffset="47.1"
+            stroke-linecap="butt" transform="rotate(-90 40 40)"/>
+          <circle cx="40" cy="40" r="30" fill="none"
+            stroke="var(--teal)" stroke-width="14"
+            stroke-dasharray="83.9 188.5"
+            stroke-dashoffset="-41.5"
+            stroke-linecap="butt" transform="rotate(-90 40 40)"/>
+          <text x="40" y="37" text-anchor="middle" font-size="13" font-weight="700" fill="var(--fg)" font-family="Inter,sans-serif">119</text>
+          <text x="40" y="51" text-anchor="middle" font-size="8" fill="var(--fg-3)" font-family="Inter,sans-serif">staff</text>
+        </svg>
+        <div class="donut-legend">
+          <div class="leg-row">
+            <div class="leg-dot" style="background:var(--blue)"></div>
+            <span class="leg-label">Male</span>
+            <span class="leg-val" style="margin-left:12px;">66</span>
+          </div>
+          <div class="leg-row">
+            <div class="leg-dot" style="background:var(--teal)"></div>
+            <span class="leg-label">Female</span>
+            <span class="leg-val" style="margin-left:12px;">53</span>
+          </div>
+          <div style="margin-top:4px;padding-top:8px;border-top:1px solid var(--border);">
+            <div class="leg-row">
+              <span style="font-size:11px;color:var(--fg-3);">Ratio M:F</span>
+              <span style="font-size:12px;font-weight:600;margin-left:auto;">55 : 45</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ── HIRING TREND ── -->
+<p class="section-label">Hiring Trend</p>
+<div class="card">
+  <div class="card-hd">
+    <span class="card-title">Staff Joined by Year</span>
+    <span class="card-count">1999 – 2026</span>
+  </div>
+  <div style="overflow-x:auto;">
+    <svg id="trend-svg" class="trend-svg" height="120" style="min-width:600px;display:block;"></svg>
+  </div>
+</div>
+
+<!-- ── DESIGNATIONS + SOCIAL ── -->
+<p class="section-label">Composition</p>
+<div class="g2">
+
+  <div class="card">
+    <div class="card-hd">
+      <span class="card-title">Top Designations</span>
+      <span class="card-count">40 total</span>
+    </div>
+    <div class="bar-list" id="desig-bars"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-hd">
+      <span class="card-title">Social Category</span>
+    </div>
+    <div class="bar-list" id="cat-bars"></div>
+    <div style="margin-top:16px;padding-top:14px;border-top:1px solid var(--border);">
+      <div class="card-title" style="margin-bottom:10px;font-size:13px;">Qualification Levels</div>
+      <div class="chips">
+        <span class="chip">10th</span><span class="chip">12th</span>
+        <span class="chip">UG</span><span class="chip">PG</span>
+        <span class="chip">Doctorate</span><span class="chip">Others</span>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ── RECENT EMPLOYEES ── -->
+<p class="section-label">Recent Staff (2026 Joiners)</p>
+<div class="card" style="overflow-x:auto;">
+  <table class="emp-table" id="emp-table">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>ID</th>
+        <th>Department</th>
+        <th>Designation</th>
+        <th>Role</th>
+        <th>Gender</th>
+      </tr>
+    </thead>
+    <tbody id="emp-body"></tbody>
+  </table>
 </div>
 
 <!-- FOOTER -->
