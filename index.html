@@ -1,5 +1,6 @@
-<title>IECC HRM Dashboard</title>
+<title>Okie Dokie Institute</title>
 <meta name="claude:viewport-fit-sides" content="cover">
+<link rel="icon" type="image/png" href="https://okiedokie-erp-images.s3.ap-south-1.amazonaws.com/Okie%20Dokie/2025/12/sourceURL/26aebcbe10f4ac5a3e8b-611ed1b9032568edd4f3-Okie_Dokie_App_icon__2___2_-removebg-preview.png">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap">
 
 <style>
@@ -233,6 +234,54 @@ body{
   border-radius:20px;padding:4px 11px;
 }
 
+/* ── Hero attendance card ────────────────────────────────────────────── */
+.hero{
+  background:var(--surface);border-radius:var(--r);
+  border:1px solid var(--border);box-shadow:var(--shadow-sm);
+  padding:24px 28px;display:flex;gap:32px;align-items:center;flex-wrap:wrap;
+}
+.hero-date{font-size:12px;font-weight:500;color:var(--fg-3);margin-bottom:4px;letter-spacing:0.02em;}
+.hero-title{font-size:20px;font-weight:700;letter-spacing:-0.02em;margin-bottom:20px;}
+.hero-nums{display:flex;gap:24px;flex-wrap:wrap;}
+.hero-num{display:flex;flex-direction:column;gap:4px;}
+.hero-n{font-size:44px;font-weight:800;line-height:1;letter-spacing:-0.04em;font-variant-numeric:tabular-nums;}
+.hero-pct{font-size:12px;font-weight:600;padding:1px 7px;border-radius:20px;display:inline-block;margin-top:2px;}
+.hero-lbl{font-size:12px;color:var(--fg-3);margin-top:2px;}
+.hero-divider{width:1px;background:var(--border);align-self:stretch;flex-shrink:0;}
+.hero-chart{flex:1;min-width:200px;display:flex;flex-direction:column;gap:10px;}
+.hero-bar-row{display:flex;align-items:center;gap:10px;}
+.hero-bar-lbl{font-size:12px;color:var(--fg-2);width:72px;flex-shrink:0;}
+.hero-bar-track{flex:1;height:10px;background:var(--surface-2);border-radius:5px;overflow:hidden;}
+.hero-bar-fill{height:100%;border-radius:5px;}
+.hero-bar-val{font-size:12px;font-weight:600;color:var(--fg);width:28px;text-align:right;flex-shrink:0;}
+
+/* ── KPI tiles ───────────────────────────────────────────────────────── */
+.kpi-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;}
+.kpi{
+  background:var(--surface);border-radius:var(--r);
+  padding:16px 18px;border:1px solid var(--border);
+  box-shadow:var(--shadow-xs);
+}
+.kpi-val{font-size:30px;font-weight:700;letter-spacing:-0.03em;line-height:1;font-variant-numeric:tabular-nums;}
+.kpi-lbl{font-size:11px;color:var(--fg-3);margin-top:5px;}
+.kpi-sub{font-size:11px;font-weight:500;margin-top:3px;}
+
+/* ── Week trend inline ───────────────────────────────────────────────── */
+.trend-row{display:flex;flex-direction:column;gap:10px;}
+.trend-day{display:flex;align-items:center;gap:12px;}
+.trend-lbl{font-size:12px;font-weight:500;color:var(--fg-2);width:56px;flex-shrink:0;}
+.trend-track{flex:1;height:22px;border-radius:6px;overflow:hidden;display:flex;min-width:0;}
+.trend-meta{display:flex;gap:8px;padding-left:68px;margin-top:-4px;margin-bottom:4px;}
+.trend-tag{font-size:11px;font-weight:500;font-variant-numeric:tabular-nums;}
+
+/* ── Glance table ────────────────────────────────────────────────────── */
+.gl-table{width:100%;border-collapse:collapse;}
+.gl-table td{font-size:13px;padding:8px 6px;border-bottom:1px solid var(--border);vertical-align:middle;}
+.gl-table tr:last-child td{border-bottom:none;}
+.gl-table td:first-child{color:var(--fg);font-weight:500;}
+.gl-table td:last-child{text-align:right;font-weight:600;font-variant-numeric:tabular-nums;}
+.gl-pill{font-size:11px;font-weight:600;padding:2px 8px;border-radius:20px;white-space:nowrap;}
+
 /* ── Footer ─────────────────────────────────────────────────────────── */
 .footer{
   margin-top:28px;padding-top:16px;border-top:1px solid var(--border);
@@ -249,8 +298,8 @@ body{
         <svg viewBox="0 0 24 24"><path d="M12 3L1 9l11 6 9-4.91V17h2V9L12 3zM5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82z"/></svg>
       </div>
       <div>
-        <div class="hdr-name">IEC College of Engineering &amp; Technology</div>
-        <div class="hdr-sub">HRM Dashboard · IECC · Session: Payment Recovery 26-27</div>
+        <div class="hdr-name">Okie Dokie Institute</div>
+        <div class="hdr-sub">HRM Dashboard · Session: Payment Recovery 26-27</div>
       </div>
     </div>
     <div class="hdr-right">
@@ -262,118 +311,143 @@ body{
 
 <div class="page">
 
-<!-- ── OVERVIEW STATS ── -->
+<!-- ══ HERO: TODAY AT A GLANCE ══ -->
+<div class="hero" style="margin-bottom:0;">
+  <div style="flex:1;min-width:220px;">
+    <div class="hero-date">Wednesday, 4 November 2026</div>
+    <div class="hero-title">Today's Attendance</div>
+    <div class="hero-nums">
+      <div class="hero-num">
+        <div class="hero-n" style="color:var(--green);">59</div>
+        <span class="hero-pct" style="background:var(--green-s);color:var(--green);">50%</span>
+        <div class="hero-lbl">Present</div>
+      </div>
+      <div class="hero-num">
+        <div class="hero-n" style="color:var(--orange);">39</div>
+        <span class="hero-pct" style="background:var(--orange-s);color:var(--orange);">33%</span>
+        <div class="hero-lbl">Half Day</div>
+      </div>
+      <div class="hero-num">
+        <div class="hero-n" style="color:var(--pink);">21</div>
+        <span class="hero-pct" style="background:var(--pink-s);color:var(--pink);">18%</span>
+        <div class="hero-lbl">Absent</div>
+      </div>
+      <div class="hero-num">
+        <div class="hero-n" style="color:#FF6400;">53</div>
+        <span class="hero-pct" style="background:rgba(255,100,0,0.1);color:#FF6400;">45%</span>
+        <div class="hero-lbl">Late</div>
+      </div>
+    </div>
+  </div>
+  <div class="hero-divider" style="display:none;" id="hero-div"></div>
+  <div class="hero-chart" style="max-width:320px;">
+    <div style="font-size:11px;font-weight:600;color:var(--fg-3);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:6px;">Breakdown · 119 total staff</div>
+    <div class="hero-bar-row">
+      <div class="hero-bar-lbl">Present</div>
+      <div class="hero-bar-track"><div class="hero-bar-fill" style="width:49.6%;background:var(--green);"></div></div>
+      <div class="hero-bar-val">59</div>
+    </div>
+    <div class="hero-bar-row">
+      <div class="hero-bar-lbl">Half Day</div>
+      <div class="hero-bar-track"><div class="hero-bar-fill" style="width:32.8%;background:var(--orange);"></div></div>
+      <div class="hero-bar-val">39</div>
+    </div>
+    <div class="hero-bar-row">
+      <div class="hero-bar-lbl">Absent</div>
+      <div class="hero-bar-track"><div class="hero-bar-fill" style="width:17.6%;background:var(--pink);"></div></div>
+      <div class="hero-bar-val">21</div>
+    </div>
+    <div class="hero-bar-row">
+      <div class="hero-bar-lbl">Late In</div>
+      <div class="hero-bar-track"><div class="hero-bar-fill" style="width:44.5%;background:#FF6400;opacity:0.75;"></div></div>
+      <div class="hero-bar-val">53</div>
+    </div>
+    <div style="margin-top:12px;padding-top:10px;border-top:1px solid var(--border);display:flex;gap:16px;flex-wrap:wrap;">
+      <div style="display:flex;flex-direction:column;gap:1px;">
+        <span style="font-size:18px;font-weight:700;color:#FF6400;letter-spacing:-0.02em;">18.5<span style="font-size:12px;font-weight:500;"> min</span></span>
+        <span style="font-size:11px;color:var(--fg-3);">Avg late arrival</span>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:1px;">
+        <span style="font-size:18px;font-weight:700;color:var(--fg);letter-spacing:-0.02em;">19.3<span style="font-size:12px;font-weight:500;">h</span></span>
+        <span style="font-size:11px;color:var(--fg-3);">Avg hrs / 4 days</span>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:1px;">
+        <span style="font-size:18px;font-weight:700;color:var(--pink);letter-spacing:-0.02em;">10</span>
+        <span style="font-size:11px;color:var(--fg-3);">Zero hours</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── STAFF KPIs ── -->
 <p class="section-label">Workforce Overview</p>
-<div class="stat-row">
-  <div class="stat">
-    <div class="stat-ic ic-g">
-      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg>
-    </div>
-    <div class="stat-n">119</div>
-    <div class="stat-l">Active Staff</div>
+<div class="kpi-row">
+  <div class="kpi">
+    <div class="kpi-val" style="color:var(--blue);">119</div>
+    <div class="kpi-lbl">Total Staff</div>
+    <div class="kpi-sub" style="color:var(--green);">All Active</div>
   </div>
-  <div class="stat">
-    <div class="stat-ic ic-p">
-      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3L1 9l11 6 9-4.91V17h2V9L12 3zM5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82z"/></svg>
-    </div>
-    <div class="stat-n">77</div>
-    <div class="stat-l">Teaching Staff</div>
+  <div class="kpi">
+    <div class="kpi-val" style="color:var(--purple);">77</div>
+    <div class="kpi-lbl">Teaching Staff</div>
+    <div class="kpi-sub" style="color:var(--fg-3);">65% of workforce</div>
   </div>
-  <div class="stat">
-    <div class="stat-ic ic-o">
-      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5S10.62 6.5 12 6.5s2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
-    </div>
-    <div class="stat-n">20</div>
-    <div class="stat-l">Departments</div>
+  <div class="kpi">
+    <div class="kpi-val" style="color:var(--teal);">42</div>
+    <div class="kpi-lbl">Non-Teaching</div>
+    <div class="kpi-sub" style="color:var(--fg-3);">35% of workforce</div>
   </div>
-  <div class="stat">
-    <div class="stat-ic ic-pk">
-      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
-    </div>
-    <div class="stat-n">66</div>
-    <div class="stat-l">Male</div>
+  <div class="kpi">
+    <div class="kpi-val" style="color:var(--orange);">20</div>
+    <div class="kpi-lbl">Departments</div>
+    <div class="kpi-sub" style="color:var(--fg-3);">PHARMACY leads</div>
   </div>
-  <div class="stat">
-    <div class="stat-ic ic-t">
-      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
-    </div>
-    <div class="stat-n">53</div>
-    <div class="stat-l">Female</div>
+  <div class="kpi">
+    <div class="kpi-val" style="color:var(--fg);">19.3h</div>
+    <div class="kpi-lbl">Avg Hours / 4 days</div>
+    <div class="kpi-sub" style="color:var(--fg-3);">~4.8h effective/day</div>
+  </div>
+  <div class="kpi">
+    <div class="kpi-val" style="color:var(--green);">31</div>
+    <div class="kpi-lbl">New Joiners 2026</div>
+    <div class="kpi-sub" style="color:var(--green);">↑ 72% vs 2025</div>
   </div>
 </div>
 
-<!-- ── BIOMETRIC ATTENDANCE ── -->
-<p class="section-label">Biometric Attendance · November 2026</p>
+<!-- ── WEEK TREND + SIDE CARDS ── -->
+<p class="section-label">This Week · Nov 1–4, 2026</p>
+<div class="g2">
 
-<div class="stat-row">
-  <div class="stat">
-    <div class="stat-ic ic-g"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div>
-    <div class="stat-n">60</div><div class="stat-l">Present · avg/day</div>
-  </div>
-  <div class="stat">
-    <div class="stat-ic ic-o"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg></div>
-    <div class="stat-n">37</div><div class="stat-l">Half Day · avg/day</div>
-  </div>
-  <div class="stat">
-    <div class="stat-ic ic-pk"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg></div>
-    <div class="stat-n">21</div><div class="stat-l">Absent · avg/day</div>
-  </div>
-  <div class="stat">
-    <div class="stat-ic" style="background:rgba(255,100,0,0.12);color:#FF6400"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67V7z"/></svg></div>
-    <div class="stat-n">59</div><div class="stat-l">Late Arrivals · avg/day</div>
-  </div>
-  <div class="stat">
-    <div class="stat-ic ic-b"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M17 1H7c-1.1 0-2 .9-2 2v18c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2V3c0-1.1-.9-2-2-2zm0 18H7V5h10v14z"/></svg></div>
-    <div class="stat-n">313</div><div class="stat-l">Biometric Punches</div>
-  </div>
-  <div class="stat">
-    <div class="stat-ic ic-t"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg></div>
-    <div class="stat-n">4</div><div class="stat-l">Active Devices</div>
-  </div>
-</div>
-
-<div class="g2" style="margin-top:10px;">
-
-  <!-- Daily breakdown -->
+  <!-- Stacked attendance trend -->
   <div class="card">
     <div class="card-hd">
-      <span class="card-title">Daily Attendance Breakdown</span>
-      <span class="card-count">Nov 1–4</span>
-    </div>
-    <div style="display:flex;gap:14px;flex-wrap:wrap;margin-bottom:14px;">
-      <div style="display:flex;align-items:center;gap:5px;"><div style="width:10px;height:10px;border-radius:2px;background:var(--green);"></div><span style="font-size:11px;color:var(--fg-3);">Present</span></div>
-      <div style="display:flex;align-items:center;gap:5px;"><div style="width:10px;height:10px;border-radius:2px;background:var(--orange);"></div><span style="font-size:11px;color:var(--fg-3);">Half Day</span></div>
-      <div style="display:flex;align-items:center;gap:5px;"><div style="width:10px;height:10px;border-radius:2px;background:var(--pink);"></div><span style="font-size:11px;color:var(--fg-3);">Absent</span></div>
-      <div style="display:flex;align-items:center;gap:5px;"><div style="width:10px;height:10px;border-radius:2px;background:var(--surface-2);border:1px solid var(--border);"></div><span style="font-size:11px;color:var(--fg-3);">Weekly Off</span></div>
+      <span class="card-title">Daily Attendance</span>
+      <div style="display:flex;gap:10px;">
+        <span style="display:flex;align-items:center;gap:4px;font-size:11px;color:var(--fg-3);"><span style="width:8px;height:8px;border-radius:2px;background:var(--green);display:inline-block;"></span>Present</span>
+        <span style="display:flex;align-items:center;gap:4px;font-size:11px;color:var(--fg-3);"><span style="width:8px;height:8px;border-radius:2px;background:var(--orange);display:inline-block;"></span>Half</span>
+        <span style="display:flex;align-items:center;gap:4px;font-size:11px;color:var(--fg-3);"><span style="width:8px;height:8px;border-radius:2px;background:var(--pink);display:inline-block;"></span>Absent</span>
+      </div>
     </div>
     <div id="att-stacked"></div>
-
     <div style="margin-top:16px;padding-top:14px;border-top:1px solid var(--border);">
-      <div class="card-title" style="font-size:13px;margin-bottom:12px;">Late Arrival Rate</div>
+      <div style="font-size:12px;font-weight:600;color:var(--fg-2);margin-bottom:10px;">Late Arrival Rate</div>
       <div style="display:flex;flex-direction:column;gap:8px;" id="late-bars"></div>
-      <div style="margin-top:10px;font-size:11px;color:var(--fg-3);display:flex;gap:5px;align-items:center;">
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" style="color:var(--orange);flex-shrink:0;"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
-        Late = biometric check-in after scheduled shift start
-      </div>
     </div>
   </div>
 
+  <!-- Right column: late list + absent + devices -->
   <div style="display:flex;flex-direction:column;gap:10px;">
 
-    <!-- Device usage -->
     <div class="card">
       <div class="card-hd">
-        <span class="card-title">Device Usage</span>
-        <span class="card-count">Nov 2–4</span>
+        <span class="card-title">Top Late Arrivals · Today</span>
+        <span class="card-count">53 total</span>
       </div>
-      <div class="bar-list" id="device-bars"></div>
-      <div style="margin-top:14px;padding-top:12px;border-top:1px solid var(--border);">
-        <div style="font-size:11px;color:var(--fg-3);font-weight:600;letter-spacing:0.04em;text-transform:uppercase;margin-bottom:8px;">Device Registry</div>
-        <div id="device-registry"></div>
-      </div>
+      <table class="gl-table" id="late-table">
+        <tbody></tbody>
+      </table>
     </div>
 
-    <!-- Absent both days -->
     <div class="card">
       <div class="card-hd">
         <span class="card-title">Absent Both Days (Nov 2–3)</span>
@@ -385,104 +459,41 @@ body{
   </div>
 </div>
 
-<!-- ── EMPLOYEE ATTENDANCE (Nov 4) ── -->
-<p class="section-label">Today's Attendance Detail · 4 Nov 2026</p>
-
-<div class="stat-row">
-  <div class="stat">
-    <div class="stat-ic ic-g"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div>
-    <div class="stat-n">59</div><div class="stat-l">Present (Full)</div>
-  </div>
-  <div class="stat">
-    <div class="stat-ic ic-o"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg></div>
-    <div class="stat-n">39</div><div class="stat-l">Half Day</div>
-  </div>
-  <div class="stat">
-    <div class="stat-ic ic-pk"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg></div>
-    <div class="stat-n">21</div><div class="stat-l">Absent</div>
-  </div>
-  <div class="stat">
-    <div class="stat-ic" style="background:rgba(255,100,0,0.12);color:#FF6400"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67V7z"/></svg></div>
-    <div class="stat-n">53</div><div class="stat-l">Late Arrivals</div>
-  </div>
-  <div class="stat">
-    <div class="stat-ic ic-b"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M17 1H7c-1.1 0-2 .9-2 2v18c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2V3c0-1.1-.9-2-2-2zm0 18H7V5h10v14z"/></svg></div>
-    <div class="stat-n">18.5</div><div class="stat-l">Avg Late (mins)</div>
-  </div>
-  <div class="stat">
-    <div class="stat-ic ic-t"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg></div>
-    <div class="stat-n">104</div><div class="stat-l">Max Late (mins)</div>
-  </div>
-</div>
-
-<div class="g2" style="margin-top:10px;">
+<!-- ── WORKING TIME + DEVICES ── -->
+<p class="section-label">Working Time · Nov 1–4</p>
+<div class="g2">
   <div class="card">
     <div class="card-hd">
-      <span class="card-title">Top Late Arrivals · Nov 4</span>
-      <span class="card-count">53 total late</span>
+      <span class="card-title">Top 10 by Hours Worked</span>
+      <span class="card-count">4-day total</span>
     </div>
-    <div class="bar-list" id="late-detail-bars"></div>
+    <div class="bar-list" id="top-hours-bars"></div>
   </div>
-  <div class="card">
-    <div class="card-hd">
-      <span class="card-title">Device Activity · Nov 4</span>
-      <span class="card-count">103 biometric punches</span>
+  <div style="display:flex;flex-direction:column;gap:10px;">
+    <div class="card">
+      <div class="card-hd">
+        <span class="card-title">Dept Average Hours</span>
+        <span class="card-count">4-day period</span>
+      </div>
+      <div class="bar-list" id="dept-hours-bars"></div>
     </div>
-    <div class="bar-list" id="device-nov4-bars"></div>
-    <div style="margin-top:14px;padding-top:12px;border-top:1px solid var(--border);">
-      <div style="font-size:11px;color:var(--fg-3);font-weight:600;letter-spacing:0.04em;text-transform:uppercase;margin-bottom:8px;">Punch Mode</div>
-      <div style="display:flex;gap:12px;flex-wrap:wrap;">
-        <div style="display:flex;align-items:center;gap:6px;background:var(--surface-2);border-radius:8px;padding:6px 12px;">
-          <div style="width:8px;height:8px;border-radius:50%;background:var(--green);"></div>
-          <span style="font-size:12px;font-weight:600;color:var(--fg);">103</span>
+    <div class="card">
+      <div class="card-hd">
+        <span class="card-title">Biometric Devices</span>
+        <span class="card-count">Nov 2–4</span>
+      </div>
+      <div class="bar-list" id="device-bars"></div>
+      <div style="margin-top:12px;padding-top:10px;border-top:1px solid var(--border);display:flex;gap:12px;">
+        <div style="display:flex;align-items:center;gap:6px;background:var(--green-s);border-radius:8px;padding:5px 10px;">
+          <span style="font-size:13px;font-weight:700;color:var(--green);">103</span>
           <span style="font-size:11px;color:var(--fg-3);">Biometric</span>
         </div>
-        <div style="display:flex;align-items:center;gap:6px;background:var(--surface-2);border-radius:8px;padding:6px 12px;">
-          <div style="width:8px;height:8px;border-radius:50%;background:var(--fg-3);"></div>
-          <span style="font-size:12px;font-weight:600;color:var(--fg);">16</span>
+        <div style="display:flex;align-items:center;gap:6px;background:var(--surface-2);border-radius:8px;padding:5px 10px;">
+          <span style="font-size:13px;font-weight:700;color:var(--fg);">16</span>
           <span style="font-size:11px;color:var(--fg-3);">No Punch</span>
         </div>
       </div>
     </div>
-  </div>
-</div>
-
-<!-- ── WORKING TIME ── -->
-<p class="section-label">Working Time Report · Nov 1–4, 2026</p>
-
-<div class="stat-row">
-  <div class="stat">
-    <div class="stat-ic ic-b"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67V7z"/></svg></div>
-    <div class="stat-n">19.3</div><div class="stat-l">Avg Hours (4 days)</div>
-  </div>
-  <div class="stat">
-    <div class="stat-ic ic-g"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div>
-    <div class="stat-n">32.7</div><div class="stat-l">Max Hours (Hostel)</div>
-  </div>
-  <div class="stat">
-    <div class="stat-ic ic-o"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg></div>
-    <div class="stat-n">10</div><div class="stat-l">Zero Hours</div>
-  </div>
-  <div class="stat">
-    <div class="stat-ic ic-t"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 14l-5-5 1.41-1.41L12 14.17l7.59-7.59L21 8l-9 9z"/></svg></div>
-    <div class="stat-n">119</div><div class="stat-l">Employees Tracked</div>
-  </div>
-</div>
-
-<div class="g2" style="margin-top:10px;">
-  <div class="card">
-    <div class="card-hd">
-      <span class="card-title">Top 10 by Hours Worked</span>
-      <span class="card-count">Nov 1–4 total</span>
-    </div>
-    <div class="bar-list" id="top-hours-bars"></div>
-  </div>
-  <div class="card">
-    <div class="card-hd">
-      <span class="card-title">Dept Average Hours</span>
-      <span class="card-count">4-day period</span>
-    </div>
-    <div class="bar-list" id="dept-hours-bars"></div>
   </div>
 </div>
 
@@ -741,21 +752,28 @@ lateEl.innerHTML = attDays.filter(d=>d.late>0).map(d => {
 // Device usage bars
 renderBars('device-bars', deviceUsage, 264);
 
-// Device registry
-document.getElementById('device-registry').innerHTML = deviceRegistry.map(([serial,id]) =>
-  `<div style="display:flex;align-items:center;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border);">
-    <span style="font-size:12px;font-family:ui-monospace,monospace;color:var(--accent);font-weight:600;">${serial}</span>
-    <span style="font-size:11px;color:var(--fg-3);">ID ${id}</span>
-  </div>`
-).join('').replace(/border-bottom[^;]+;(?=<\/div>\s*$)/, 'border-bottom:none;');
-
 // Absent both days
-document.getElementById('absent-list').innerHTML = absentBoth.map(n =>
-  `<div style="display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);">
+document.getElementById('absent-list').innerHTML = absentBoth.map((n,i) =>
+  `<div style="display:flex;align-items:center;justify-content:space-between;padding:7px 0;${i<absentBoth.length-1?'border-bottom:1px solid var(--border);':''}">
     <span style="font-size:13px;font-weight:500;color:var(--fg);">${n}</span>
     <span style="font-size:11px;font-weight:600;padding:2px 8px;border-radius:20px;background:var(--pink-s);color:var(--pink);">2 days</span>
   </div>`
 ).join('');
+
+// Late arrivals table
+const lateDetailData = [
+  ['Mahendra Kumar Sonker',104],['Kanchan Jha',59],['Monika Bhati',44],
+  ['Nisha',44],['Poonam Pal',44],['Suvranshu S. Rath',43],
+  ['Bhishma Prasad Yadav',41],['Kanhaiya Kumar Pandey',41],
+  ['Abhinav Kumar Vats',39],['Rashmi Soni',37]
+];
+document.querySelector('#late-table tbody').innerHTML = lateDetailData.map(([name,mins],i)=>`
+  <tr>
+    <td style="color:var(--fg);font-weight:500;font-size:13px;">${i+1}. ${name}</td>
+    <td>
+      <span class="gl-pill" style="background:${mins>60?'var(--pink-s)':mins>30?'var(--orange-s)':'var(--surface-2)'};color:${mins>60?'var(--pink)':mins>30?'var(--orange)':'var(--fg-3)'};">${mins} min</span>
+    </td>
+  </tr>`).join('');
 
 /* ── Trend SVG ── */
 (function(){
@@ -800,20 +818,6 @@ document.getElementById('absent-list').innerHTML = absentBoth.map(n =>
 
   svg.innerHTML = yAxis + bars + labels;
 })();
-
-/* ── Attendance detail (Nov 4) ── */
-const lateDetailData = [
-  ['Mahendra Kumar Sonker',104],['Kanchan Jha',59],['Monika Bhati',44],
-  ['Nisha',44],['Poonam Pal',44],['Suvranshu S. Rath',43],
-  ['Bhishma Prasad Yadav',41],['Kanhaiya Kumar Pandey',41],
-  ['Abhinav Kumar Vats',39],['Rashmi Soni',37]
-];
-const deviceNov4 = [
-  ['Device 19 (Entry Main)',80],['Device 21 (Exit Gate)',18],
-  ['Device 20 (Gate 2)',3],['Device 23 (Block B)',2]
-];
-renderBars('late-detail-bars', lateDetailData, 104);
-renderBars('device-nov4-bars', deviceNov4, 80);
 
 /* ── Working time report ── */
 const topHoursData = [
