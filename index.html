@@ -680,7 +680,7 @@ function renderBars(containerId, data, maxOverride){
       <div class="bar-track">
         <div class="bar-fill" style="width:${(val/max*100).toFixed(1)}%;background:${COLORS[i%COLORS.length]};"></div>
       </div>
-      <div class="bar-val">${val}</div>
+      <div class="bar-val">${val}${containerId.includes('hours') ? '<span style="font-size:10px;font-weight:400;color:var(--fg-3);">h</span>' : ''}</div>
     </div>`).join('');
 }
 renderBars('dept-bars', deptData);
