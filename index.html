@@ -90,24 +90,63 @@ body{
 :root[data-theme="dark"] .hdr{background:rgba(0,0,0,0.80);}
 .hdr-in{max-width:1120px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;}
 .hdr-brand{display:flex;align-items:center;gap:10px;}
-.hdr-logo{
-  width:34px;height:34px;border-radius:9px;background:var(--blue);
-  display:grid;place-items:center;flex-shrink:0;
-}
+.hdr-logo{width:34px;height:34px;border-radius:9px;background:var(--blue);display:grid;place-items:center;flex-shrink:0;}
 .hdr-logo svg{width:18px;height:18px;fill:white;}
 .hdr-name{font-size:14px;font-weight:600;letter-spacing:-0.01em;}
 .hdr-sub{font-size:11px;color:var(--fg-3);}
 .hdr-right{display:flex;align-items:center;gap:8px;}
-.badge{
-  display:inline-flex;align-items:center;gap:5px;
-  font-size:11.5px;font-weight:500;padding:4px 10px;border-radius:20px;
-}
+.badge{display:inline-flex;align-items:center;gap:5px;font-size:11.5px;font-weight:500;padding:4px 10px;border-radius:20px;}
 .badge-green{background:var(--green-s);color:var(--green);}
 .badge-dot{width:6px;height:6px;border-radius:50%;background:var(--green);}
 .badge-blue{background:var(--blue-s);color:var(--blue);}
 
+/* ── Date picker bar ─────────────────────────────────────────────────── */
+.dpr{
+  position:sticky; top:calc(env(safe-area-inset-top,0px) + 58px); z-index:29;
+  background:rgba(245,245,247,0.90);
+  backdrop-filter:saturate(160%) blur(20px);
+  -webkit-backdrop-filter:saturate(160%) blur(20px);
+  border-bottom:1px solid var(--border);
+  margin-left:max(-16px,calc(-1 * env(safe-area-inset-left,0px)));
+  margin-right:max(-16px,calc(-1 * env(safe-area-inset-right,0px)));
+  padding-left:max(20px,env(safe-area-inset-left,0px));
+  padding-right:max(20px,env(safe-area-inset-right,0px));
+  padding-block:8px;
+}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]) .dpr{background:rgba(0,0,0,0.88);}}
+:root[data-theme="dark"] .dpr{background:rgba(0,0,0,0.88);}
+.dpr-in{max-width:1120px;margin:0 auto;display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+.dpr-presets{display:flex;gap:6px;}
+.dpr-btn{
+  font-size:12px;font-weight:500;padding:5px 12px;border-radius:20px;
+  border:1px solid var(--border);background:var(--surface);color:var(--fg-2);
+  cursor:pointer;transition:all .15s;white-space:nowrap;
+}
+.dpr-btn:hover{background:var(--surface-2);}
+.dpr-btn.active{background:var(--blue);color:#fff;border-color:var(--blue);}
+.dpr-sep-line{width:1px;height:20px;background:var(--border);flex-shrink:0;}
+.dpr-custom{display:flex;align-items:center;gap:6px;}
+.dpr-input{
+  font-size:12px;font-family:var(--font);padding:5px 10px;
+  border-radius:8px;border:1px solid var(--border);
+  background:var(--surface);color:var(--fg);
+  cursor:pointer;outline:none;
+}
+.dpr-input:focus{border-color:var(--blue);}
+.dpr-arrow{font-size:12px;color:var(--fg-3);}
+.dpr-apply{
+  font-size:12px;font-weight:600;padding:5px 14px;border-radius:20px;
+  border:none;background:var(--blue);color:#fff;cursor:pointer;
+  transition:opacity .15s;
+}
+.dpr-apply:hover{opacity:0.85;}
+.dpr-status{font-size:11px;color:var(--fg-3);margin-left:auto;}
+.dpr-err{font-size:11px;color:var(--pink);margin-left:auto;}
+.spin{display:inline-block;width:12px;height:12px;border:2px solid var(--border);border-top-color:var(--blue);border-radius:50%;animation:spin .7s linear infinite;vertical-align:middle;margin-right:4px;}
+@keyframes spin{to{transform:rotate(360deg)}}
+
 /* ── Page wrap ─────────────────────────────────────────────────────── */
-.page{max-width:1120px;margin:0 auto;padding-top:24px;}
+.page{max-width:1120px;margin:0 auto;padding-top:24px;position:relative;}
 .section-label{
   font-size:11px;font-weight:600;letter-spacing:0.07em;
   text-transform:uppercase;color:var(--fg-3);
@@ -116,26 +155,11 @@ body{
 .section-label:first-child{margin-top:0;}
 
 /* ── Stat tiles ─────────────────────────────────────────────────────── */
-.stat-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;}
-.stat{
-  background:var(--surface);border-radius:var(--r);
-  padding:18px 20px;border:1px solid var(--border);
-  box-shadow:var(--shadow-xs);
-  display:flex;flex-direction:column;gap:6px;
-}
-.stat-ic{
-  width:34px;height:34px;border-radius:var(--r-xs);
-  display:grid;place-items:center;margin-bottom:2px;
-}
-.stat-ic svg{width:17px;height:17px;}
-.stat-n{font-size:34px;font-weight:700;letter-spacing:-0.03em;line-height:1;font-variant-numeric:tabular-nums;}
-.stat-l{font-size:12px;color:var(--fg-3);}
-.ic-b{background:var(--blue-s);color:var(--blue);}
-.ic-g{background:var(--green-s);color:var(--green);}
-.ic-o{background:var(--orange-s);color:var(--orange);}
-.ic-p{background:var(--purple-s);color:var(--purple);}
-.ic-pk{background:var(--pink-s);color:var(--pink);}
-.ic-t{background:var(--teal-s);color:var(--teal);}
+.kpi-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;}
+.kpi{background:var(--surface);border-radius:var(--r);padding:16px 18px;border:1px solid var(--border);box-shadow:var(--shadow-xs);}
+.kpi-val{font-size:30px;font-weight:700;letter-spacing:-0.03em;line-height:1;font-variant-numeric:tabular-nums;}
+.kpi-lbl{font-size:11px;color:var(--fg-3);margin-top:5px;}
+.kpi-sub{font-size:11px;font-weight:500;margin-top:3px;}
 
 /* ── 2-col / 3-col grids ─────────────────────────────────────────── */
 .g2{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
@@ -144,106 +168,49 @@ body{
 @media(max-width:720px){.g2,.g3,.g32{grid-template-columns:1fr;}}
 
 /* ── Card ───────────────────────────────────────────────────────────── */
-.card{
-  background:var(--surface);border-radius:var(--r);
-  padding:18px 20px;border:1px solid var(--border);
-  box-shadow:var(--shadow-xs);
-}
-.card-hd{
-  display:flex;align-items:center;justify-content:space-between;
-  margin-bottom:14px;
-}
+.card{background:var(--surface);border-radius:var(--r);padding:18px 20px;border:1px solid var(--border);box-shadow:var(--shadow-xs);}
+.card-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
 .card-title{font-size:14px;font-weight:600;letter-spacing:-0.01em;}
-.card-count{
-  font-size:12px;font-weight:500;color:var(--fg-3);
-  background:var(--surface-2);border-radius:20px;padding:2px 8px;
-}
+.card-count{font-size:12px;font-weight:500;color:var(--fg-3);background:var(--surface-2);border-radius:20px;padding:2px 8px;}
 .card-badge{font-size:11px;font-weight:500;padding:2px 8px;border-radius:20px;background:var(--surface-2);color:var(--fg-3);}
 .badge-red{background:var(--pink-s);color:var(--pink);}
 .badge-orange{background:var(--orange-s);color:var(--orange);}
 .tbl-wrap{overflow-x:auto;}
 
 /* ── Horizontal bar chart ─────────────────────────────────────────── */
-.bar-list{display:flex;flex-direction:column;gap:7px;}
-.bar-row{display:flex;align-items:center;gap:8px;}
+.bar-row{display:flex;align-items:center;gap:8px;margin-bottom:7px;}
+.bar-row:last-child{margin-bottom:0;}
 .bar-label{font-size:12px;color:var(--fg-2);width:120px;flex-shrink:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .bar-track{flex:1;height:7px;background:var(--surface-2);border-radius:4px;overflow:hidden;min-width:0;}
 .bar-fill{height:100%;border-radius:4px;transition:width .4s ease;}
-.bar-val{font-size:12px;font-weight:500;font-variant-numeric:tabular-nums;color:var(--fg-3);width:24px;text-align:right;flex-shrink:0;}
+.bar-val{font-size:12px;font-weight:500;font-variant-numeric:tabular-nums;color:var(--fg-3);width:36px;text-align:right;flex-shrink:0;}
 
 /* ── Donut ──────────────────────────────────────────────────────────── */
 .donut-wrap{display:flex;align-items:center;gap:20px;flex-wrap:wrap;}
-.donut-legend{display:flex;flex-direction:column;gap:9px;}
+.donut-legend{display:flex;flex-direction:column;gap:9px;flex:1;}
 .leg-row{display:flex;align-items:center;gap:8px;}
 .leg-dot{width:10px;height:10px;border-radius:3px;flex-shrink:0;}
 .leg-label{font-size:12.5px;color:var(--fg-2);}
 .leg-val{font-size:12px;font-weight:600;color:var(--fg);margin-left:auto;font-variant-numeric:tabular-nums;}
-.donut-legend{flex:1;}
-
-/* ── Trend chart (SVG bar) ─────────────────────────────────────────── */
-.trend-svg{width:100%;overflow:visible;}
 
 /* ── Employee table ─────────────────────────────────────────────────── */
 .emp-table{width:100%;border-collapse:collapse;min-width:0;}
-.emp-table th{
-  font-size:11px;font-weight:600;letter-spacing:0.04em;
-  text-transform:uppercase;color:var(--fg-3);
-  text-align:left;padding:0 8px 10px;border-bottom:1px solid var(--border);
-}
-.emp-table td{
-  font-size:13px;color:var(--fg-2);
-  padding:9px 8px;border-bottom:1px solid var(--border);
-  vertical-align:middle;
-}
+.emp-table th{font-size:11px;font-weight:600;letter-spacing:0.04em;text-transform:uppercase;color:var(--fg-3);text-align:left;padding:0 8px 10px;border-bottom:1px solid var(--border);}
+.emp-table td{font-size:13px;color:var(--fg-2);padding:9px 8px;border-bottom:1px solid var(--border);vertical-align:middle;}
 .emp-table tr:last-child td{border-bottom:none;}
 .emp-table td:first-child{color:var(--fg);font-weight:500;}
 .emp-id{font-size:11px;color:var(--fg-3);font-variant-numeric:tabular-nums;}
-.role-pill{
-  display:inline-block;font-size:11px;font-weight:500;
-  padding:2px 8px;border-radius:20px;white-space:nowrap;
-}
+.role-pill{display:inline-block;font-size:11px;font-weight:500;padding:2px 8px;border-radius:20px;white-space:nowrap;}
 
-/* ── Stacked bar ─────────────────────────────────────────────────── */
-.sbar-row{display:flex;align-items:center;gap:10px;margin-bottom:4px;}
-.sbar-day{font-size:12px;font-weight:500;color:var(--fg-2);width:70px;flex-shrink:0;}
-.sbar-track{flex:1;height:20px;border-radius:5px;overflow:hidden;display:flex;min-width:0;}
-.sbar-seg{height:100%;transition:width .4s;}
-.sbar-labels{display:flex;gap:6px;padding-left:80px;margin-bottom:10px;}
-.sbar-lbl{font-size:11px;color:var(--fg-3);font-variant-numeric:tabular-nums;}
-
-/* ── Device mini card ────────────────────────────────────────────── */
-.dev-mini{display:flex;align-items:center;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border);}
-.dev-mini:last-child{border-bottom:none;}
-.dev-mini-id{font-size:12px;font-family:ui-monospace,monospace;color:var(--accent);font-weight:600;}
-
-/* ── Absent row ──────────────────────────────────────────────────── */
-.abs-row{display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);}
-.abs-row:last-child{border-bottom:none;}
-.abs-name{font-size:13px;font-weight:500;color:var(--fg);}
-.abs-badge{font-size:11px;font-weight:600;padding:2px 8px;border-radius:20px;background:var(--pink-s);color:var(--pink);}
-
-/* ── Late bar ───────────────────────────────────────────────────── */
-.late-row{display:flex;align-items:center;gap:10px;}
-.late-day{font-size:12px;font-weight:500;color:var(--fg-2);width:80px;flex-shrink:0;}
-.late-track{flex:1;height:28px;background:var(--surface-2);border-radius:6px;overflow:hidden;display:flex;align-items:center;}
-.late-fill{height:100%;border-radius:6px;display:flex;align-items:center;padding-left:10px;}
-.late-label{font-size:12px;font-weight:600;color:white;white-space:nowrap;}
-.late-pct{font-size:12px;font-weight:500;color:var(--fg-3);width:36px;text-align:right;flex-shrink:0;}
-
-/* ── Chip ───────────────────────────────────────────────────────────── */
-.chips{display:flex;flex-wrap:wrap;gap:6px;}
-.chip{
-  font-size:12px;font-weight:500;color:var(--fg-2);
-  background:var(--surface-2);border:1px solid var(--border);
-  border-radius:20px;padding:4px 11px;
-}
+/* ── Data table ─────────────────────────────────────────────────────── */
+.data-tbl{width:100%;border-collapse:collapse;}
+.data-tbl th{font-size:11px;font-weight:600;letter-spacing:0.04em;text-transform:uppercase;color:var(--fg-3);text-align:left;padding:0 8px 10px;border-bottom:1px solid var(--border);}
+.data-tbl td{font-size:13px;color:var(--fg-2);padding:8px 8px;border-bottom:1px solid var(--border);vertical-align:middle;}
+.data-tbl tr:last-child td{border-bottom:none;}
+.data-tbl td:first-child{color:var(--fg);font-weight:500;}
 
 /* ── Hero attendance card ────────────────────────────────────────────── */
-.hero{
-  background:var(--surface);border-radius:var(--r);
-  border:1px solid var(--border);box-shadow:var(--shadow-sm);
-  padding:24px 28px;display:flex;gap:32px;align-items:center;flex-wrap:wrap;
-}
+.hero{background:var(--surface);border-radius:var(--r);border:1px solid var(--border);box-shadow:var(--shadow-sm);padding:24px 28px;display:flex;gap:32px;align-items:center;flex-wrap:wrap;}
 .hero-date{font-size:12px;font-weight:500;color:var(--fg-3);margin-bottom:4px;letter-spacing:0.02em;}
 .hero-title{font-size:20px;font-weight:700;letter-spacing:-0.02em;margin-bottom:20px;}
 .hero-nums{display:flex;gap:24px;flex-wrap:wrap;}
@@ -259,26 +226,7 @@ body{
 .hero-bar-fill{height:100%;border-radius:5px;}
 .hero-bar-val{font-size:12px;font-weight:600;color:var(--fg);width:28px;text-align:right;flex-shrink:0;}
 
-/* ── KPI tiles ───────────────────────────────────────────────────────── */
-.kpi-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;}
-.kpi{
-  background:var(--surface);border-radius:var(--r);
-  padding:16px 18px;border:1px solid var(--border);
-  box-shadow:var(--shadow-xs);
-}
-.kpi-val{font-size:30px;font-weight:700;letter-spacing:-0.03em;line-height:1;font-variant-numeric:tabular-nums;}
-.kpi-lbl{font-size:11px;color:var(--fg-3);margin-top:5px;}
-.kpi-sub{font-size:11px;font-weight:500;margin-top:3px;}
-
-/* ── Week trend inline ───────────────────────────────────────────────── */
-.trend-row{display:flex;flex-direction:column;gap:10px;}
-.trend-day{display:flex;align-items:center;gap:12px;}
-.trend-lbl{font-size:12px;font-weight:500;color:var(--fg-2);width:56px;flex-shrink:0;}
-.trend-track{flex:1;height:22px;border-radius:6px;overflow:hidden;display:flex;min-width:0;}
-.trend-meta{display:flex;gap:8px;padding-left:68px;margin-top:-4px;margin-bottom:4px;}
-.trend-tag{font-size:11px;font-weight:500;font-variant-numeric:tabular-nums;}
-
-/* ── Glance table ────────────────────────────────────────────────────── */
+/* ── Stacked bar ─────────────────────────────────────────────────── */
 .gl-table{width:100%;border-collapse:collapse;}
 .gl-table td{font-size:13px;padding:8px 6px;border-bottom:1px solid var(--border);vertical-align:middle;}
 .gl-table tr:last-child td{border-bottom:none;}
@@ -286,11 +234,28 @@ body{
 .gl-table td:last-child{text-align:right;font-weight:600;font-variant-numeric:tabular-nums;}
 .gl-pill{font-size:11px;font-weight:600;padding:2px 8px;border-radius:20px;white-space:nowrap;}
 
-/* ── Footer ─────────────────────────────────────────────────────────── */
-.footer{
-  margin-top:28px;padding-top:16px;border-top:1px solid var(--border);
-  display:flex;justify-content:space-between;flex-wrap:wrap;gap:6px;
+/* ── Trend chart (SVG bar) ─────────────────────────────────────────── */
+.trend-svg{width:100%;overflow:visible;}
+
+/* ── Chips ─────────────────────────────────────────────────────────── */
+.chips{display:flex;flex-wrap:wrap;gap:6px;}
+.chip{font-size:12px;font-weight:500;color:var(--fg-2);background:var(--surface-2);border:1px solid var(--border);border-radius:20px;padding:4px 11px;}
+
+/* ── Loading skeleton ────────────────────────────────────────────── */
+.skeleton{background:var(--surface-2);border-radius:8px;animation:shimmer 1.4s infinite linear;background-size:400% 100%;}
+@keyframes shimmer{0%{opacity:0.5}50%{opacity:1}100%{opacity:0.5}}
+
+/* ── Error banner ────────────────────────────────────────────────── */
+.err-banner{
+  background:var(--pink-s);border:1px solid rgba(233,30,140,0.2);
+  border-radius:var(--r-sm);padding:12px 16px;
+  font-size:13px;color:var(--pink);margin-bottom:16px;
+  display:none;
 }
+.err-banner.show{display:block;}
+
+/* ── Footer ─────────────────────────────────────────────────────────── */
+.footer{margin-top:28px;padding-top:16px;border-top:1px solid var(--border);display:flex;justify-content:space-between;flex-wrap:wrap;gap:6px;}
 .footer-txt{font-size:11px;color:var(--fg-3);}
 </style>
 
@@ -307,122 +272,67 @@ body{
       </div>
     </div>
     <div class="hdr-right">
-      <span class="badge badge-green"><span class="badge-dot"></span>119 Active</span>
+      <span class="badge badge-green" id="active-badge"><span class="badge-dot"></span><span id="active-count">—</span> Active</span>
       <span class="badge badge-blue">Live data</span>
     </div>
   </div>
 </div>
 
+<!-- DATE PICKER BAR -->
+<div class="dpr">
+  <div class="dpr-in">
+    <div class="dpr-presets">
+      <button class="dpr-btn" data-preset="today">Today</button>
+      <button class="dpr-btn active" data-preset="week">This Week</button>
+      <button class="dpr-btn" data-preset="7d">Last 7 Days</button>
+      <button class="dpr-btn" data-preset="month">This Month</button>
+    </div>
+    <div class="dpr-sep-line"></div>
+    <div class="dpr-custom">
+      <input type="date" id="dpr-start" class="dpr-input">
+      <span class="dpr-arrow">→</span>
+      <input type="date" id="dpr-end" class="dpr-input">
+      <button class="dpr-apply" id="dpr-apply">Apply</button>
+    </div>
+    <span class="dpr-status" id="dpr-status"></span>
+    <span class="dpr-err" id="dpr-err" style="display:none"></span>
+  </div>
+</div>
+
 <div class="page">
 
-<!-- ══ HERO: TODAY AT A GLANCE ══ -->
-<div class="hero" style="margin-bottom:0;">
+<!-- Error banner -->
+<div class="err-banner" id="err-banner"></div>
+
+<!-- ══ HERO ══ -->
+<div class="hero" style="margin-bottom:0;" id="hero-card">
   <div style="flex:1;min-width:220px;">
-    <div class="hero-date">Last Updated · Wednesday, 4 November 2026</div>
-    <div class="hero-title">Latest Attendance</div>
-    <div class="hero-nums">
-      <div class="hero-num">
-        <div class="hero-n" style="color:var(--green);">59</div>
-        <span class="hero-pct" style="background:var(--green-s);color:var(--green);">50%</span>
-        <div class="hero-lbl">Present</div>
-      </div>
-      <div class="hero-num">
-        <div class="hero-n" style="color:var(--orange);">39</div>
-        <span class="hero-pct" style="background:var(--orange-s);color:var(--orange);">33%</span>
-        <div class="hero-lbl">Half Day</div>
-      </div>
-      <div class="hero-num">
-        <div class="hero-n" style="color:var(--pink);">21</div>
-        <span class="hero-pct" style="background:var(--pink-s);color:var(--pink);">18%</span>
-        <div class="hero-lbl">Absent</div>
-      </div>
-      <div class="hero-num">
-        <div class="hero-n" style="color:#FF6400;">53</div>
-        <span class="hero-pct" style="background:rgba(255,100,0,0.1);color:#FF6400;">45%</span>
-        <div class="hero-lbl">Late</div>
-      </div>
+    <div class="hero-date" id="hero-date">Loading…</div>
+    <div class="hero-title" id="hero-title">Latest Attendance</div>
+    <div class="hero-nums" id="hero-nums">
+      <div style="height:60px;width:200px;" class="skeleton"></div>
     </div>
   </div>
-  <div class="hero-divider" style="display:none;" id="hero-div"></div>
-  <div class="hero-chart" style="max-width:320px;">
-    <div style="font-size:11px;font-weight:600;color:var(--fg-3);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:6px;">Breakdown · 119 total staff</div>
-    <div class="hero-bar-row">
-      <div class="hero-bar-lbl">Present</div>
-      <div class="hero-bar-track"><div class="hero-bar-fill" style="width:49.6%;background:var(--green);"></div></div>
-      <div class="hero-bar-val">59</div>
-    </div>
-    <div class="hero-bar-row">
-      <div class="hero-bar-lbl">Half Day</div>
-      <div class="hero-bar-track"><div class="hero-bar-fill" style="width:32.8%;background:var(--orange);"></div></div>
-      <div class="hero-bar-val">39</div>
-    </div>
-    <div class="hero-bar-row">
-      <div class="hero-bar-lbl">Absent</div>
-      <div class="hero-bar-track"><div class="hero-bar-fill" style="width:17.6%;background:var(--pink);"></div></div>
-      <div class="hero-bar-val">21</div>
-    </div>
-    <div class="hero-bar-row">
-      <div class="hero-bar-lbl">Late In</div>
-      <div class="hero-bar-track"><div class="hero-bar-fill" style="width:44.5%;background:#FF6400;opacity:0.75;"></div></div>
-      <div class="hero-bar-val">53</div>
-    </div>
-    <div style="margin-top:12px;padding-top:10px;border-top:1px solid var(--border);display:flex;gap:16px;flex-wrap:wrap;">
-      <div style="display:flex;flex-direction:column;gap:1px;">
-        <span style="font-size:18px;font-weight:700;color:#FF6400;letter-spacing:-0.02em;">18.5<span style="font-size:12px;font-weight:500;"> min</span></span>
-        <span style="font-size:11px;color:var(--fg-3);">Avg late arrival</span>
-      </div>
-      <div style="display:flex;flex-direction:column;gap:1px;">
-        <span style="font-size:18px;font-weight:700;color:var(--fg);letter-spacing:-0.02em;">19.3<span style="font-size:12px;font-weight:500;">h</span></span>
-        <span style="font-size:11px;color:var(--fg-3);">Avg hrs / 4 days</span>
-      </div>
-      <div style="display:flex;flex-direction:column;gap:1px;">
-        <span style="font-size:18px;font-weight:700;color:var(--pink);letter-spacing:-0.02em;">10</span>
-        <span style="font-size:11px;color:var(--fg-3);">Zero hours</span>
-      </div>
-    </div>
+  <div class="hero-divider"></div>
+  <div class="hero-chart" style="max-width:320px;" id="hero-chart">
+    <div style="height:100px;width:100%;" class="skeleton"></div>
   </div>
 </div>
 
 <!-- ── STAFF KPIs ── -->
 <p class="section-label">Workforce Overview</p>
-<div class="kpi-row">
-  <div class="kpi">
-    <div class="kpi-val" style="color:var(--blue);">119</div>
-    <div class="kpi-lbl">Total Staff</div>
-    <div class="kpi-sub" style="color:var(--green);">All Active</div>
-  </div>
-  <div class="kpi">
-    <div class="kpi-val" style="color:var(--purple);">77</div>
-    <div class="kpi-lbl">Teaching Staff</div>
-    <div class="kpi-sub" style="color:var(--fg-3);">65% of workforce</div>
-  </div>
-  <div class="kpi">
-    <div class="kpi-val" style="color:var(--teal);">42</div>
-    <div class="kpi-lbl">Non-Teaching</div>
-    <div class="kpi-sub" style="color:var(--fg-3);">35% of workforce</div>
-  </div>
-  <div class="kpi">
-    <div class="kpi-val" style="color:var(--orange);">20</div>
-    <div class="kpi-lbl">Departments</div>
-    <div class="kpi-sub" style="color:var(--fg-3);">PHARMACY leads</div>
-  </div>
-  <div class="kpi">
-    <div class="kpi-val" style="color:var(--fg);">19.3h</div>
-    <div class="kpi-lbl">Avg Hours / 4 days</div>
-    <div class="kpi-sub" style="color:var(--fg-3);">~4.8h effective/day</div>
-  </div>
-  <div class="kpi">
-    <div class="kpi-val" style="color:var(--green);">31</div>
-    <div class="kpi-lbl">New Joiners 2026</div>
-    <div class="kpi-sub" style="color:var(--green);">↑ 72% vs 2025</div>
-  </div>
+<div class="kpi-row" id="kpi-row">
+  <div class="kpi"><div class="kpi-val" style="color:var(--blue);" id="kpi-total">—</div><div class="kpi-lbl">Total Staff</div><div class="kpi-sub" style="color:var(--green);">All Active</div></div>
+  <div class="kpi"><div class="kpi-val" style="color:var(--purple);" id="kpi-teaching">—</div><div class="kpi-lbl">Teaching Staff</div><div class="kpi-sub" style="color:var(--fg-3);" id="kpi-teaching-pct">—</div></div>
+  <div class="kpi"><div class="kpi-val" style="color:var(--teal);" id="kpi-nonteach">—</div><div class="kpi-lbl">Non-Teaching</div><div class="kpi-sub" style="color:var(--fg-3);" id="kpi-nonteach-pct">—</div></div>
+  <div class="kpi"><div class="kpi-val" style="color:var(--orange);" id="kpi-depts">—</div><div class="kpi-lbl">Departments</div><div class="kpi-sub" style="color:var(--fg-3);" id="kpi-depts-lead">—</div></div>
+  <div class="kpi"><div class="kpi-val" style="color:var(--fg);" id="kpi-avghrs">—</div><div class="kpi-lbl" id="kpi-avghrs-lbl">Avg Hours</div><div class="kpi-sub" style="color:var(--fg-3);" id="kpi-avghrs-sub">—</div></div>
+  <div class="kpi"><div class="kpi-val" style="color:var(--green);" id="kpi-joiners">—</div><div class="kpi-lbl">New Joiners 2026</div><div class="kpi-sub" style="color:var(--green);" id="kpi-joiners-sub">—</div></div>
 </div>
 
-<!-- ── WEEK TREND + SIDE CARDS ── -->
-<p class="section-label">This Week · Nov 1–4, 2026</p>
+<!-- ── WEEK TREND ── -->
+<p class="section-label" id="week-label">This Week</p>
 <div class="g2">
-
-  <!-- Stacked attendance trend -->
   <div class="card">
     <div class="card-hd">
       <span class="card-title">Daily Attendance</span>
@@ -439,61 +349,46 @@ body{
     </div>
   </div>
 
-  <!-- Right column: late list + absent + devices -->
   <div style="display:flex;flex-direction:column;gap:10px;">
-
     <div class="card">
       <div class="card-hd">
-        <span class="card-title">Top Late Arrivals · Today</span>
-        <span class="card-count">53 total</span>
+        <span class="card-title">Top Late Arrivals</span>
+        <span class="card-count" id="late-count">—</span>
       </div>
-      <table class="gl-table" id="late-table">
-        <tbody></tbody>
-      </table>
+      <table class="gl-table"><tbody id="late-table"></tbody></table>
     </div>
-
     <div class="card">
       <div class="card-hd">
-        <span class="card-title">Absent Both Days (Nov 2–3)</span>
-        <span class="card-count">8 staff</span>
+        <span class="card-title">Absent All Working Days</span>
+        <span class="card-count" id="absent-count">—</span>
       </div>
       <div id="absent-list"></div>
     </div>
-
   </div>
 </div>
 
-<!-- ── WORKING TIME + DEVICES ── -->
-<p class="section-label">Working Time · Nov 1–4</p>
+<!-- ── WORKING TIME ── -->
+<p class="section-label" id="wt-label">Working Time</p>
 <div class="g2">
   <div class="card">
-    <div class="card-hd">
-      <span class="card-title">Top 10 by Hours Worked</span>
-      <span class="card-count">4-day total</span>
-    </div>
-    <div class="bar-list" id="top-hours-bars"></div>
+    <div class="card-hd"><span class="card-title">Top 10 by Hours Worked</span><span class="card-count" id="wt-period">—</span></div>
+    <div id="top-hours-bars"></div>
   </div>
   <div style="display:flex;flex-direction:column;gap:10px;">
     <div class="card">
-      <div class="card-hd">
-        <span class="card-title">Dept Average Hours</span>
-        <span class="card-count">4-day period</span>
-      </div>
-      <div class="bar-list" id="dept-hours-bars"></div>
+      <div class="card-hd"><span class="card-title">Dept Average Hours</span><span class="card-count" id="wt-period2">—</span></div>
+      <div id="dept-hours-bars"></div>
     </div>
     <div class="card">
-      <div class="card-hd">
-        <span class="card-title">Biometric Devices</span>
-        <span class="card-count">Nov 2–4</span>
-      </div>
-      <div class="bar-list" id="device-bars"></div>
+      <div class="card-hd"><span class="card-title">Biometric Devices</span></div>
+      <div id="device-bars"></div>
       <div style="margin-top:12px;padding-top:10px;border-top:1px solid var(--border);display:flex;gap:12px;">
         <div style="display:flex;align-items:center;gap:6px;background:var(--green-s);border-radius:8px;padding:5px 10px;">
-          <span style="font-size:13px;font-weight:700;color:var(--green);">103</span>
+          <span style="font-size:13px;font-weight:700;color:var(--green);" id="bio-count">—</span>
           <span style="font-size:11px;color:var(--fg-3);">Biometric</span>
         </div>
         <div style="display:flex;align-items:center;gap:6px;background:var(--surface-2);border-radius:8px;padding:5px 10px;">
-          <span style="font-size:13px;font-weight:700;color:var(--fg);">16</span>
+          <span style="font-size:13px;font-weight:700;color:var(--fg);" id="nopunch-count">—</span>
           <span style="font-size:11px;color:var(--fg-3);">No Punch</span>
         </div>
       </div>
@@ -501,138 +396,13 @@ body{
   </div>
 </div>
 
-<!-- ── DISTRIBUTION ── -->
-<p class="section-label">Distribution</p>
-<div class="g32">
-
-  <div class="card">
-    <div class="card-hd">
-      <span class="card-title">By Department</span>
-      <span class="card-count">20 depts</span>
-    </div>
-    <div class="bar-list" id="dept-bars"></div>
-  </div>
-
-  <div style="display:flex;flex-direction:column;gap:10px;">
-    <div class="card">
-      <div class="card-hd">
-        <span class="card-title">By Role</span>
-        <span class="card-count">6 roles</span>
-      </div>
-      <div class="bar-list" id="role-bars"></div>
-    </div>
-    <div class="card">
-      <div class="card-hd">
-        <span class="card-title">Gender</span>
-      </div>
-      <div class="donut-wrap">
-        <svg viewBox="0 0 80 80" width="80" height="80" style="flex-shrink:0;">
-          <circle cx="40" cy="40" r="30" fill="none" stroke="var(--surface-2)" stroke-width="14"/>
-          <circle cx="40" cy="40" r="30" fill="none"
-            stroke="var(--blue)" stroke-width="14"
-            stroke-dasharray="104.6 188.5"
-            stroke-dashoffset="47.1"
-            stroke-linecap="butt" transform="rotate(-90 40 40)"/>
-          <circle cx="40" cy="40" r="30" fill="none"
-            stroke="var(--teal)" stroke-width="14"
-            stroke-dasharray="83.9 188.5"
-            stroke-dashoffset="-41.5"
-            stroke-linecap="butt" transform="rotate(-90 40 40)"/>
-          <text x="40" y="37" text-anchor="middle" font-size="13" font-weight="700" fill="var(--fg)" font-family="Inter,sans-serif">119</text>
-          <text x="40" y="51" text-anchor="middle" font-size="8" fill="var(--fg-3)" font-family="Inter,sans-serif">staff</text>
-        </svg>
-        <div class="donut-legend">
-          <div class="leg-row">
-            <div class="leg-dot" style="background:var(--blue)"></div>
-            <span class="leg-label">Male</span>
-            <span class="leg-val" style="margin-left:12px;">66</span>
-          </div>
-          <div class="leg-row">
-            <div class="leg-dot" style="background:var(--teal)"></div>
-            <span class="leg-label">Female</span>
-            <span class="leg-val" style="margin-left:12px;">53</span>
-          </div>
-          <div style="margin-top:4px;padding-top:8px;border-top:1px solid var(--border);">
-            <div class="leg-row">
-              <span style="font-size:11px;color:var(--fg-3);">Ratio M:F</span>
-              <span style="font-size:12px;font-weight:600;margin-left:auto;">55 : 45</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-</div>
-
-<!-- ── HIRING TREND ── -->
-<p class="section-label">Hiring Trend</p>
-<div class="card">
-  <div class="card-hd">
-    <span class="card-title">Staff Joined by Year</span>
-    <span class="card-count">1999 – 2026</span>
-  </div>
-  <div style="overflow-x:auto;">
-    <svg id="trend-svg" class="trend-svg" height="120" style="min-width:600px;display:block;"></svg>
-  </div>
-</div>
-
-<!-- ── DESIGNATIONS + SOCIAL ── -->
-<p class="section-label">Composition</p>
+<!-- ── INDIVIDUAL ATTENDANCE ── -->
+<p class="section-label" id="indatt-label">Individual Attendance</p>
 <div class="g2">
-
   <div class="card">
-    <div class="card-hd">
-      <span class="card-title">Top Designations</span>
-      <span class="card-count">40 total</span>
-    </div>
-    <div class="bar-list" id="desig-bars"></div>
-  </div>
-
-  <div class="card">
-    <div class="card-hd">
-      <span class="card-title">Social Category</span>
-    </div>
-    <div class="bar-list" id="cat-bars"></div>
-    <div style="margin-top:16px;padding-top:14px;border-top:1px solid var(--border);">
-      <div class="card-title" style="margin-bottom:10px;font-size:13px;">Qualification Levels</div>
-      <div class="chips">
-        <span class="chip">10th</span><span class="chip">12th</span>
-        <span class="chip">UG</span><span class="chip">PG</span>
-        <span class="chip">Doctorate</span><span class="chip">Others</span>
-      </div>
-    </div>
-  </div>
-
-</div>
-
-<!-- ── RECENT EMPLOYEES ── -->
-<p class="section-label">Recent Staff (2026 Joiners)</p>
-<div class="card" style="overflow-x:auto;">
-  <table class="emp-table" id="emp-table">
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>ID</th>
-        <th>Department</th>
-        <th>Designation</th>
-        <th>Role</th>
-        <th>Gender</th>
-      </tr>
-    </thead>
-    <tbody id="emp-body"></tbody>
-  </table>
-</div>
-
-<!-- INDIVIDUAL ATTENDANCE REPORT -->
-<p class="section-label">Individual Attendance · Nov 1–4</p>
-<div class="grid-2">
-  <!-- Dept Attendance % -->
-  <div class="card">
-    <div class="card-hd"><span class="card-title">Dept Attendance Rate</span><span class="card-badge">3 working days</span></div>
+    <div class="card-hd"><span class="card-title">Dept Attendance Rate</span><span class="card-badge" id="indatt-days-badge">—</span></div>
     <div id="deptAttBars"></div>
   </div>
-  <!-- Chronic Absentees -->
   <div class="card">
     <div class="card-hd"><span class="card-title">Chronic Absentees</span><span class="card-badge badge-red">≥2 absent days</span></div>
     <div class="tbl-wrap"><table class="data-tbl">
@@ -641,319 +411,612 @@ body{
     </table></div>
   </div>
 </div>
-<div class="card" style="margin-top:16px">
-  <div class="card-hd"><span class="card-title">Repeat Late Arrivals</span><span class="card-badge badge-orange">Late all 3 working days</span></div>
+<div class="card" style="margin-top:10px">
+  <div class="card-hd"><span class="card-title">Repeat Late Arrivals</span><span class="card-badge badge-orange" id="repeat-late-badge">—</span></div>
   <div class="tbl-wrap"><table class="data-tbl">
-    <thead><tr><th>Employee</th><th>Dept</th><th style="text-align:center">Total Late</th><th style="text-align:center">Unpaid Lates</th><th style="text-align:center">Attendance %</th></tr></thead>
+    <thead><tr><th>Employee</th><th>Dept</th><th style="text-align:center">Total Late</th><th style="text-align:center">Unpaid</th><th style="text-align:center">Att%</th></tr></thead>
     <tbody id="lateTbody"></tbody>
   </table></div>
+</div>
+
+<!-- ── DISTRIBUTION ── -->
+<p class="section-label">Distribution</p>
+<div class="g32">
+  <div class="card">
+    <div class="card-hd"><span class="card-title">By Department</span><span class="card-count" id="dept-count">—</span></div>
+    <div id="dept-bars"></div>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:10px;">
+    <div class="card">
+      <div class="card-hd"><span class="card-title">By Role</span></div>
+      <div id="role-bars"></div>
+    </div>
+    <div class="card">
+      <div class="card-hd"><span class="card-title">Gender</span></div>
+      <div class="donut-wrap">
+        <svg viewBox="0 0 80 80" width="80" height="80" style="flex-shrink:0;" id="gender-donut">
+          <circle cx="40" cy="40" r="30" fill="none" stroke="var(--surface-2)" stroke-width="14"/>
+          <text x="40" y="44" text-anchor="middle" font-size="10" fill="var(--fg-3)" font-family="Inter,sans-serif">…</text>
+        </svg>
+        <div class="donut-legend" id="gender-legend"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── HIRING TREND ── -->
+<p class="section-label">Hiring Trend</p>
+<div class="card">
+  <div class="card-hd"><span class="card-title">Staff Joined by Year</span><span class="card-count" id="trend-range">—</span></div>
+  <div style="overflow-x:auto;">
+    <svg id="trend-svg" class="trend-svg" height="120" style="min-width:600px;display:block;"></svg>
+  </div>
+</div>
+
+<!-- ── COMPOSITION ── -->
+<p class="section-label">Composition</p>
+<div class="g2">
+  <div class="card">
+    <div class="card-hd"><span class="card-title">Top Designations</span><span class="card-count" id="desig-count">—</span></div>
+    <div id="desig-bars"></div>
+  </div>
+  <div class="card">
+    <div class="card-hd"><span class="card-title">Social Category</span></div>
+    <div id="cat-bars"></div>
+    <div style="margin-top:16px;padding-top:14px;border-top:1px solid var(--border);">
+      <div style="font-size:13px;font-weight:600;margin-bottom:10px;">Qualification Levels</div>
+      <div class="chips" id="qual-chips"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ── RECENT EMPLOYEES ── -->
+<p class="section-label">Recent Staff (2026 Joiners)</p>
+<div class="card" style="overflow-x:auto;">
+  <table class="emp-table">
+    <thead><tr><th>Name</th><th>ID</th><th>Department</th><th>Designation</th><th>Role</th><th>Gender</th></tr></thead>
+    <tbody id="emp-body"></tbody>
+  </table>
 </div>
 
 <!-- FOOTER -->
 <div class="footer">
   <span class="footer-txt">Entity: 693f884a77ec4d000eb9a03e</span>
-  <span class="footer-txt">Last API sync: 5 Nov 2026</span>
-  <span class="footer-txt">Record updated: 12 Aug 2026</span>
+  <span class="footer-txt" id="footer-sync">—</span>
+  <span class="footer-txt" id="footer-range">—</span>
 </div>
 
 </div><!-- /page -->
 
 <script>
-/* ── Data ── */
-const deptData = [
-  ["PHARMACY",21],["CSE",17],["ADMISSION CELL",17],["AS",12],["MBA",9],
-  ["ADMIN",6],["IT",5],["ME",5],["ACCOUNTS",5],["EE",4],["MCA",3],
-  ["BCA",3],["LIBRARY",3],["REGISTRAR OFFICE",3],["IHM",1],["CE",1],
-  ["Accounts & HR",1],["Accounts",1],["PLACEMENT CELL",1],["HOSTEL",1]
-];
-const roleData = [
-  ["Teacher",77],["Other",14],["Manager",12],["Counselor",10],
-  ["Non-Teaching",6],["Support Staff",1]
-];
-const desigData = [
-  ["ASSISTANT PROFESSOR",52],["ASSOCIATE PROFESSOR",10],["COUNSELOR",7],
-  ["ACCOUNTS OFFICER",5],["LAB ASSISTANT",4],["LAB TECHNICIAN",4],
-  ["SR. ADMISSION MGR",3],["PROFESSOR",2],["ASST ADMIN OFFICER",2],
-  ["ASSISTANT REGISTRAR",2]
-];
-const catData = [
-  ["General",75],["OBC",33],["SC",5],["ST",1],["Others",1]
-];
-const yearData = [
-  [1999,2],[2000,1],[2001,2],[2002,1],[2003,3],[2004,1],[2005,2],[2006,2],
-  [2007,2],[2009,2],[2010,1],[2012,1],[2013,1],[2015,2],[2016,1],[2017,1],
-  [2018,2],[2019,2],[2021,6],[2022,10],[2023,9],[2024,16],[2025,18],[2026,31]
-];
-const recentEmps = [
-  ["Shadab Sarfaraj","1149","IT","ASSISTANT PROFESSOR","teacher","Male"],
-  ["Pooja Sharma","1162","CSE","ASSISTANT PROFESSOR","teacher","Female"],
-  ["Ravi Kumar","1178","ME","LAB ASSISTANT","non teaching","Male"],
-  ["Anjali Verma","1185","MBA","ASSOCIATE PROFESSOR","teacher","Female"],
-  ["Deepak Singh","1191","PHARMACY","ASSISTANT PROFESSOR","teacher","Male"],
-  ["Nisha Gupta","1197","AS","ASSISTANT PROFESSOR","teacher","Female"],
-  ["Mohit Yadav","1203","ADMISSION CELL","COUNSELOR","counselor","Male"],
-  ["Priya Jain","1209","ACCOUNTS","ACCOUNTS OFFICER","other","Female"],
-];
+/* ═══════════════════════════════════════════════════════════════════
+   Config
+════════════════════════════════════════════════════════════════════ */
+const TOKEN  = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjpbXSwicXVhbGlmaWNhdGlvbnMiOltdLCJ3b3JrRXhwZXJpZW5jZSI6W10sIm1vYmlsZSI6IjEyMzQ1NjEyMzQiLCJwYXNzd29yZCI6IjEyMzQ1NjEyMzQiLCJuYW1lIjoiTXVsdGkgRGFzaGJvYXJkIiwiZW50aXR5R3JvdXAiOlt7Il9pZCI6IjZhYjBlZGQ2Njg5NGZkMDAwZmIyNDgxYSIsIm5hbWUiOiJTZXRoIEphaSBQYXJrYXNoIE11a2FuZCBMYWwgSW5zdGl0dXRlIG9mIEVuZ2luZWVyaW5nIGFuZCBUZWNobm9sb2d5LCIsImVudGl0eUlkIjoiNWU3NGI5MzNjMTRkMDUyNjczNDYzZmQzIiwicWFjIjoiSk1JVCwgUmFkYXVyIiwiZGlzcGxheU5hbWUiOiJTZXRoIEphaSBQYXJrYXNoIE11a2FuZCBMYWwgSW5zdGl0dXRlIG9mIEVuZ2luZWVyaW5nIGFuZCBUZWNobm9sb2d5LChKTUlUKSIsImVudGl0eVR5cGUiOiJjb2xsZWdlIiwibG9nbyI6Imh0dHBzOi8vb2tpZWRva2llLWVycC1pbWFnZXMuczMuYXAtc291dGgtMS5hbWF6b25hd3MuY29tL0pNSVQvMjAyMC8wNC9sb2dvLzQ4NmM5NjEzZmUxNzg0ZTMxODM5LWRvd25sb2FkLnBuZyJ9LHsiX2lkIjoiNmFiMGVkZDY2ODk0ZmQwMDBmYjI0ODBhIiwibmFtZSI6IlRlYW0gT2tpZSBEb2tpZSIsImVudGl0eUlkIjoiNWVmZWVjMTBiMjQ4MTY3ODcyYjM5ZWZlIiwicWFjIjoiT2tpZSBEb2tpZSIsImRpc3BsYXlOYW1lIjoiVGVhbSBPa2llIERva2llIiwiZW50aXR5VHlwZSI6InNjaG9vbCIsImxvZ28iOiJodHRwczovL29raWVkb2tpZS1lcnAtaW1hZ2VzLnMzLmFwLXNvdXRoLTEuYW1hem9uYXdzLmNvbS9Pa2llJTIwRG9raWUvMjAyMC8wNy9sb2dvL2IyNWM3NWJjZDI2MDRhOWRhMWJjLWxvZ29fMS5wbmcifSx7Il9pZCI6IjZhYjBlZGQ2Njg5NGZkMDAwZmIyNDczOSIsIm5hbWUiOiJJRUMgQ29sbGVnZSBvZiBFbmdpbmVlcmluZyBBbmQgVGVjaG5vbG9neSIsImVudGl0eUlkIjoiNjkzZjg4NGE3N2VjNGQwMDBlYjlhMDNlIiwicWFjIjoiSUVDQyIsImRpc3BsYXlOYW1lIjoiSUVDIENvbGxlZ2Ugb2YgRW5naW5lZXJpbmcgJiBUZWNobm9sb2d5IiwiZW50aXR5VHlwZSI6ImNvbGxlZ2UiLCJsb2dvIjoiaHR0cHM6Ly9va2llZG9raWUtZXJwLWltYWdlcy5zMy5hcC1zb3V0aC0xLmFtYXpvbmF3cy5jb20vSUVDQy8yMDI2LzAxL2xvZ28vYTA4NDA0ZGU4Y2VlOTc5NWVhNDAtSUVDX0NvbGxlZ2Vfb2ZfRW5naW5lZXJpbmdfX19UZWNobm9sb2d5LWxvZ28uanBnIn0seyJfaWQiOiI2YWIwZWRkNjY4OTRmZDAwMGZiMjQ3MzQiLCJuYW1lIjoiTWFoYXJhamEgQWdyYXNlbiBJbnN0aXR1dGUgb2YgTWFuYWdlbWVudCBhbmQgVGVjaG5vbG9neSIsImVudGl0eUlkIjoiNjk1ZTM5ZTQ0MjFjMWMwMDBlOWY4MTU0IiwicWFjIjoiTUFJTVQiLCJkaXNwbGF5TmFtZSI6Ik1haGFyYWphIEFncmFzZW4gSW5zdGl0dXRlIG9mIE1hbmFnZW1lbnQgYW5kIFRlY2hub2xvZ3kiLCJlbnRpdHlUeXBlIjoiY29sbGVnZSIsImxvZ28iOiJodHRwczovL29raWVkb2tpZS1lcnAtaW1hZ2VzLnMzLmFwLXNvdXRoLTEuYW1hem9uYXdzLmNvbS9NQUlNVC8yMDI2LzAxL2xvZ28vNWU5M2Q0Y2FjNjIwZDRmOGNlNzYtTUFJTVQucG5nIn1dLCJlbnRpdHkiOiI1ZWZlZWMxMGIyNDgxNjc4NzJiMzllZmUiLCJzZXNzaW9uIjoiUGF5bWVudCBSZWNvdmVyeSAyNi0yNyIsInN0YXR1cyI6dHJ1ZSwiX2lkIjoiNmFlYjczYzA5MTNjOTkwMDBmZDMwYmE2IiwidG9rZW5WZXJzaW9uIjozLCJpYXQiOjE3OTM4MTU0ODh9.AOVP0iu5XQhjO3xlELAxsEF8QtIyuFol1TWiYenFz04';
+const ENTITY = '693f884a77ec4d000eb9a03e';
+const BASE   = 'https://others-api.odpay.in';
+const COLORS = ['#0066CC','#7B52EE','#FF9500','#28A745','#E91E8C','#00A693','#FF6347','#5856D6'];
 
-/* ── Accent palette ── */
-const COLORS = ["#0066CC","#7B52EE","#FF9500","#28A745","#E91E8C","#00A693","#FF6347","#5856D6"];
+/* ═══════════════════════════════════════════════════════════════════
+   Date utilities
+════════════════════════════════════════════════════════════════════ */
+function toISO(d) { return d.toISOString().split('T')[0]; }
+function fmtDate(d) { return d.toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'}); }
+function fmtShort(d) { return d.toLocaleDateString('en-IN',{day:'2-digit',month:'short'}); }
 
-/* ── Render horizontal bars ── */
-function renderBars(containerId, data, maxOverride){
+function getWeekRange() {
+  const today = new Date(); today.setHours(0,0,0,0);
+  const dow = today.getDay();
+  const start = new Date(today);
+  start.setDate(today.getDate() - (dow === 0 ? 6 : dow - 1));
+  return { start, end: today };
+}
+function getLast7() {
+  const end = new Date(); end.setHours(0,0,0,0);
+  const start = new Date(end); start.setDate(end.getDate() - 6);
+  return { start, end };
+}
+function getMonthRange() {
+  const today = new Date(); today.setHours(0,0,0,0);
+  const start = new Date(today.getFullYear(), today.getMonth(), 1);
+  return { start, end: today };
+}
+function getTodayRange() {
+  const today = new Date(); today.setHours(0,0,0,0);
+  return { start: today, end: today };
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   API helpers
+════════════════════════════════════════════════════════════════════ */
+async function apiGet(path) {
+  const r = await fetch(BASE + path, { headers: { Authorization: TOKEN } });
+  if (!r.ok) throw new Error(r.status);
+  return r.json();
+}
+async function apiPost(path, body) {
+  const r = await fetch(BASE + path, {
+    method: 'POST',
+    headers: { Authorization: TOKEN, 'Content-Type': 'application/json' },
+    body: JSON.stringify(body)
+  });
+  if (!r.ok) throw new Error(r.status);
+  return r.json();
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   Data processing
+════════════════════════════════════════════════════════════════════ */
+function sortDesc(map) { return Object.entries(map).sort((a,b)=>b[1]-a[1]); }
+
+function processEmployees(emps) {
+  const total = emps.length;
+  const teaching = emps.filter(e => (e.role||[]).includes('teacher')).length;
+  const deptMap={}, roleMap={}, desigMap={}, catMap={}, yearMap={}, genderMap={}, qualMap={};
+  const recent2026 = [];
+  emps.forEach(e => {
+    deptMap[e.department] = (deptMap[e.department]||0)+1;
+    (e.role||['other']).forEach(r => roleMap[r]=(roleMap[r]||0)+1);
+    if(e.designation) desigMap[e.designation]=(desigMap[e.designation]||0)+1;
+    const cat = e.socialCategory||'Others'; catMap[cat]=(catMap[cat]||0)+1;
+    const g = e.gender||'Unknown'; genderMap[g]=(genderMap[g]||0)+1;
+    if(e.joiningDate){
+      const yr = new Date(e.joiningDate).getFullYear();
+      yearMap[yr] = (yearMap[yr]||0)+1;
+      if(yr >= 2026) recent2026.push(e);
+    }
+    (e.qualifications||[]).forEach(q => { if(q.degree) qualMap[q.degree]=(qualMap[q.degree]||0)+1; });
+  });
+  return {
+    total, teaching, nonTeaching: total - teaching,
+    deptData: sortDesc(deptMap),
+    roleData: sortDesc(roleMap),
+    desigData: sortDesc(desigMap).slice(0,10),
+    catData: sortDesc(catMap),
+    genderData: genderMap,
+    yearData: Object.entries(yearMap).sort((a,b)=>+a[0] - +b[0]),
+    recentEmps: recent2026.sort((a,b)=>new Date(b.joiningDate)-new Date(a.joiningDate)).slice(0,20),
+    qualData: sortDesc(qualMap)
+  };
+}
+
+function parseHours(s) {
+  if (typeof s === 'number') return s;
+  const p = String(s||'0').split(':');
+  return parseInt(p[0]||0) + (parseInt(p[1]||0)/60);
+}
+
+function processWorkingTime(data) {
+  const withH = data.map(e=>({ name:`${e.employeeName} (${e.department})`, dept:e.department, hours: parseHours(e.totalHours) }));
+  const topHours = [...withH].filter(e=>e.hours>0).sort((a,b)=>b.hours-a.hours).slice(0,10).map(e=>[e.name,+e.hours.toFixed(2)]);
+  const dHoursSum={}, dHoursCnt={};
+  withH.forEach(e=>{ if(e.hours>0){ dHoursSum[e.dept]=(dHoursSum[e.dept]||0)+e.hours; dHoursCnt[e.dept]=(dHoursCnt[e.dept]||0)+1; } });
+  const deptHours = Object.entries(dHoursSum).map(([d,h])=>[d,+(h/dHoursCnt[d]).toFixed(2)]).sort((a,b)=>b[1]-a[1]);
+  const devMap={};
+  data.forEach(e=>(e.attendanceData||[]).forEach(day=>{ const id=day.inData?.deviceId; if(id){ const k=`Device ${id}`; devMap[k]=(devMap[k]||0)+1; } }));
+  const deviceUsage = sortDesc(devMap);
+  const totalH = data.reduce((s,e)=>s+parseHours(e.totalHours),0);
+  const avgHours = data.length ? +(totalH/data.length).toFixed(1) : 0;
+  const biometricPunched = new Set();
+  data.forEach(e=>(e.attendanceData||[]).forEach(day=>{ if(day.inData?.mode==='biometric') biometricPunched.add(e.employeeName); }));
+  return { topHours, deptHours, deviceUsage, avgHours, biometricCount: biometricPunched.size, noPunchCount: data.length - biometricPunched.size };
+}
+
+function processDailyAtt(data) {
+  const total = data.length;
+  const dayMap = {};
+  data.forEach(emp => {
+    (emp.attendanceData||[]).forEach(day => {
+      const dt = day.date.substring(0,10);
+      if(!dayMap[dt]) dayMap[dt]={ present:0,half:0,absent:0,woff:0,late:0,dateObj: new Date(dt+'T12:00:00') };
+      const v = day.value;
+      if(v==='present') dayMap[dt].present++;
+      else if(v==='half_day') dayMap[dt].half++;
+      else if(v==='absent') dayMap[dt].absent++;
+      else if(v==='weekly_off') dayMap[dt].woff++;
+      if(day.lateArrival) dayMap[dt].late++;
+    });
+  });
+  const days = Object.entries(dayMap).sort((a,b)=>a[0].localeCompare(b[0])).map(([dt,v])=>({...v,dt,label:fmtShort(v.dateObj)}));
+  const workingDays = days.filter(d=>d.woff < total);
+  const nWorking = workingDays.length;
+  const lastDay = workingDays[workingDays.length-1] || null;
+
+  // Top late for last working day
+  const lateToday = [];
+  if(lastDay) {
+    data.forEach(emp=>{
+      const entry = (emp.attendanceData||[]).find(d=>d.date.substring(0,10)===lastDay.dt);
+      if(entry?.lateArrival && entry.lateArrivalMinutes > 0) lateToday.push([emp.employeeName, entry.lateArrivalMinutes]);
+    });
+    lateToday.sort((a,b)=>b[1]-a[1]);
+  }
+
+  // Absent every working day
+  const absentAll = data.filter(e=>e.totalAbsent >= nWorking && nWorking > 0).map(e=>e.employeeName);
+
+  // Dept attendance rate
+  const dAtt={};
+  data.forEach(e=>{
+    if(!dAtt[e.department]) dAtt[e.department]={present:0,total:0};
+    dAtt[e.department].present += e.totalPresent;
+    dAtt[e.department].total += nWorking;
+  });
+  const deptAttRate = Object.entries(dAtt).map(([d,v])=>[d, v.total>0 ? Math.round(v.present/v.total*100) : 0]).sort((a,b)=>b[1]-a[1]);
+
+  // Chronic absentees (≥2 absent)
+  const absentees = data.filter(e=>e.totalAbsent>=2).sort((a,b)=>b.totalAbsent-a.totalAbsent).slice(0,20).map(e=>[e.employeeName,e.department,e.totalAbsent,e.totalPresent]);
+
+  // Repeat late (every working day)
+  const repeatLate = nWorking > 0
+    ? data.filter(e=>e.totalLateArrival>=nWorking).sort((a,b)=>b.totalLateArrival-a.totalLateArrival).slice(0,25)
+        .map(e=>{
+          const denom = e.totalPresent + e.totalAbsent;
+          const pct = denom > 0 ? Math.round(e.totalPresent/denom*100)+'%' : '0%';
+          return [e.employeeName,e.department,e.totalLateArrival,e.unpaidLateArrival,pct];
+        })
+    : [];
+
+  // Avg late minutes last day
+  const avgLate = lateToday.length ? Math.round(lateToday.reduce((s,e)=>s+e[1],0)/lateToday.length) : 0;
+
+  return { days, workingDays, nWorking, lastDay, lateToday, absentAll, deptAttRate, absentees, repeatLate, avgLate, total };
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   Render helpers
+════════════════════════════════════════════════════════════════════ */
+function renderBars(containerId, data, maxOverride, suffix) {
   const el = document.getElementById(containerId);
-  if(!el) return;
+  if(!el||!data||!data.length) return;
   const max = maxOverride || data[0][1];
   el.innerHTML = data.map(([label,val],i)=>`
     <div class="bar-row">
       <div class="bar-label" title="${label}">${label}</div>
-      <div class="bar-track">
-        <div class="bar-fill" style="width:${(val/max*100).toFixed(1)}%;background:${COLORS[i%COLORS.length]};"></div>
-      </div>
-      <div class="bar-val">${val}${containerId.includes('hours') ? '<span style="font-size:10px;font-weight:400;color:var(--fg-3);">h</span>' : ''}</div>
+      <div class="bar-track"><div class="bar-fill" style="width:${max>0?(val/max*100).toFixed(1):0}%;background:${COLORS[i%COLORS.length]};"></div></div>
+      <div class="bar-val">${val}${suffix||''}</div>
     </div>`).join('');
 }
-renderBars('dept-bars', deptData);
-renderBars('role-bars', roleData);
-renderBars('desig-bars', desigData);
-renderBars('cat-bars', catData);
 
-/* ── Biometric data ── */
-const attDays = [
-  {date:'01 Nov',present:0,  half:0,  absent:0,  woff:119, late:0},
-  {date:'02 Nov',present:59, half:41, absent:19, woff:0,   late:54},
-  {date:'03 Nov',present:60, half:36, absent:23, woff:0,   late:65},
-  {date:'04 Nov',present:62, half:35, absent:22, woff:0,   late:59},
-];
-const deviceUsage = [
-  ['Device 19 (Entry Main)',264],['Device 21 (Exit Gate)',115],
-  ['Device 23 (Block B)',22],['Device 20 (Gate 2)',12]
-];
-const deviceRegistry = [
-  ['BRC7192060470','19'],['BRC7192060828','21'],['BRC7192060866','22'],
-  ['AEXY215060912','23'],['CEXJ205160600','20']
-];
-const absentBoth = [
-  'Shahina Anjum','Tanya Singh','Bhanu P.S. Sagar','Sagrrika Gupta',
-  'Devendra Pratap Singh','Shipra Singh','Abhijit Kumar','Sujit Kumar Mishra'
-];
+function renderHero(datt, wt) {
+  const { lastDay, avgLate, total } = datt;
+  const dateEl = document.getElementById('hero-date');
+  const numsEl = document.getElementById('hero-nums');
+  const chartEl = document.getElementById('hero-chart');
+  if(!lastDay){ dateEl.textContent='No working days in range'; numsEl.innerHTML=''; chartEl.innerHTML=''; return; }
+  dateEl.textContent = `Last Updated · ${fmtDate(lastDay.dateObj)}`;
+  const { present, half, absent, late } = lastDay;
+  const pPct = Math.round(present/total*100);
+  const hPct = Math.round(half/total*100);
+  const aPct = Math.round(absent/total*100);
+  const lPct = Math.round(late/total*100);
+  numsEl.innerHTML = `
+    <div class="hero-num"><div class="hero-n" style="color:var(--green);">${present}</div><span class="hero-pct" style="background:var(--green-s);color:var(--green);">${pPct}%</span><div class="hero-lbl">Present</div></div>
+    <div class="hero-num"><div class="hero-n" style="color:var(--orange);">${half}</div><span class="hero-pct" style="background:var(--orange-s);color:var(--orange);">${hPct}%</span><div class="hero-lbl">Half Day</div></div>
+    <div class="hero-num"><div class="hero-n" style="color:var(--pink);">${absent}</div><span class="hero-pct" style="background:var(--pink-s);color:var(--pink);">${aPct}%</span><div class="hero-lbl">Absent</div></div>
+    <div class="hero-num"><div class="hero-n" style="color:#FF6400;">${late}</div><span class="hero-pct" style="background:rgba(255,100,0,0.1);color:#FF6400;">${lPct}%</span><div class="hero-lbl">Late</div></div>`;
+  chartEl.innerHTML = `
+    <div style="font-size:11px;font-weight:600;color:var(--fg-3);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:6px;">Breakdown · ${total} total staff</div>
+    <div class="hero-bar-row"><div class="hero-bar-lbl">Present</div><div class="hero-bar-track"><div class="hero-bar-fill" style="width:${present/total*100}%;background:var(--green);"></div></div><div class="hero-bar-val">${present}</div></div>
+    <div class="hero-bar-row"><div class="hero-bar-lbl">Half Day</div><div class="hero-bar-track"><div class="hero-bar-fill" style="width:${half/total*100}%;background:var(--orange);"></div></div><div class="hero-bar-val">${half}</div></div>
+    <div class="hero-bar-row"><div class="hero-bar-lbl">Absent</div><div class="hero-bar-track"><div class="hero-bar-fill" style="width:${absent/total*100}%;background:var(--pink);"></div></div><div class="hero-bar-val">${absent}</div></div>
+    <div class="hero-bar-row"><div class="hero-bar-lbl">Late In</div><div class="hero-bar-track"><div class="hero-bar-fill" style="width:${late/total*100}%;background:#FF6400;opacity:.75;"></div></div><div class="hero-bar-val">${late}</div></div>
+    <div style="margin-top:12px;padding-top:10px;border-top:1px solid var(--border);display:flex;gap:16px;flex-wrap:wrap;">
+      <div style="display:flex;flex-direction:column;gap:1px;"><span style="font-size:18px;font-weight:700;color:#FF6400;letter-spacing:-0.02em;">${avgLate}<span style="font-size:12px;font-weight:500;"> min</span></span><span style="font-size:11px;color:var(--fg-3);">Avg late arrival</span></div>
+      <div style="display:flex;flex-direction:column;gap:1px;"><span style="font-size:18px;font-weight:700;color:var(--fg);letter-spacing:-0.02em;">${wt.avgHours}<span style="font-size:12px;font-weight:500;">h</span></span><span style="font-size:11px;color:var(--fg-3);">Avg hrs / period</span></div>
+      <div style="display:flex;flex-direction:column;gap:1px;"><span style="font-size:18px;font-weight:700;color:var(--pink);letter-spacing:-0.02em;">${wt.noPunchCount}</span><span style="font-size:11px;color:var(--fg-3);">No biometric</span></div>
+    </div>`;
+}
 
-// Stacked daily bars
-const attEl = document.getElementById('att-stacked');
-attEl.innerHTML = attDays.map(d => {
-  const total = 119;
-  const segs = d.woff === 119
-    ? `<div style="width:100%;height:20px;background:var(--surface-2);border-radius:5px;"></div>`
-    : `<div style="display:flex;width:100%;height:20px;border-radius:5px;overflow:hidden;">
-        ${d.present ? `<div style="width:${(d.present/total*100).toFixed(1)}%;background:var(--green);"></div>` : ''}
-        ${d.half    ? `<div style="width:${(d.half/total*100).toFixed(1)}%;background:var(--orange);"></div>` : ''}
-        ${d.absent  ? `<div style="width:${(d.absent/total*100).toFixed(1)}%;background:var(--pink);"></div>` : ''}
-       </div>`;
-  const nums = d.woff === 119
-    ? `<span style="font-size:11px;color:var(--fg-3);">119 weekly off</span>`
-    : `<span style="font-size:11px;color:var(--green);font-weight:600;">${d.present}P</span>
-       <span style="font-size:11px;color:var(--orange);font-weight:600;">${d.half}H</span>
-       <span style="font-size:11px;color:var(--pink);font-weight:600;">${d.absent}A</span>
-       ${d.late ? `<span style="font-size:11px;color:#FF6400;margin-left:4px;">⏰ ${d.late} late</span>` : ''}`;
-  return `<div style="margin-bottom:8px;">
-    <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px;">
-      <div style="font-size:12px;font-weight:500;color:var(--fg-2);width:60px;flex-shrink:0;">${d.date}</div>
-      <div style="flex:1;min-width:0;">${segs}</div>
-    </div>
-    <div style="display:flex;gap:8px;padding-left:70px;">${nums}</div>
-  </div>`;
-}).join('');
+function renderKPIs(emps, wt) {
+  document.getElementById('kpi-total').textContent = emps.total;
+  document.getElementById('active-count').textContent = emps.total;
+  document.getElementById('kpi-teaching').textContent = emps.teaching;
+  document.getElementById('kpi-teaching-pct').textContent = `${Math.round(emps.teaching/emps.total*100)}% of workforce`;
+  document.getElementById('kpi-nonteach').textContent = emps.nonTeaching;
+  document.getElementById('kpi-nonteach-pct').textContent = `${Math.round(emps.nonTeaching/emps.total*100)}% of workforce`;
+  document.getElementById('kpi-depts').textContent = emps.deptData.length;
+  document.getElementById('kpi-depts-lead').textContent = emps.deptData[0]?.[0] + ' leads';
+  document.getElementById('kpi-avghrs').textContent = wt.avgHours + 'h';
+  document.getElementById('kpi-joiners').textContent = emps.recentEmps.length;
+  const yr2025 = emps.yearData.find(([y])=>+y===2025)?.[1] || 1;
+  const pct2026 = Math.round((emps.recentEmps.length / yr2025 - 1) * 100);
+  document.getElementById('kpi-joiners-sub').textContent = (pct2026>0?'↑':'↓') + Math.abs(pct2026) + '% vs 2025';
+}
 
-// Late bars
-const lateEl = document.getElementById('late-bars');
-lateEl.innerHTML = attDays.filter(d=>d.late>0).map(d => {
-  const pct = (d.late/119*100).toFixed(0);
-  return `<div style="display:flex;align-items:center;gap:10px;">
-    <div style="font-size:12px;font-weight:500;color:var(--fg-2);width:60px;flex-shrink:0;">${d.date}</div>
-    <div style="flex:1;height:24px;background:var(--surface-2);border-radius:6px;overflow:hidden;">
-      <div style="width:${pct}%;height:100%;background:linear-gradient(90deg,#FF6B00,#FF9500);display:flex;align-items:center;padding-left:8px;">
-        <span style="font-size:11px;font-weight:600;color:white;white-space:nowrap;">${d.late} late</span>
+function renderStackedChart(datt) {
+  const { days, total } = datt;
+  const el = document.getElementById('att-stacked');
+  el.innerHTML = days.map(d => {
+    if(d.woff >= total) return `<div style="margin-bottom:8px;"><div style="display:flex;align-items:center;gap:10px;margin-bottom:4px;"><div style="font-size:12px;font-weight:500;color:var(--fg-2);width:60px;flex-shrink:0;">${d.label}</div><div style="flex:1;min-width:0;height:20px;background:var(--surface-2);border-radius:5px;"></div></div><div style="display:flex;gap:8px;padding-left:70px;"><span style="font-size:11px;color:var(--fg-3);">${total} weekly off</span></div></div>`;
+    const pW=(d.present/total*100).toFixed(1), hW=(d.half/total*100).toFixed(1), aW=(d.absent/total*100).toFixed(1);
+    return `<div style="margin-bottom:8px;">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px;">
+        <div style="font-size:12px;font-weight:500;color:var(--fg-2);width:60px;flex-shrink:0;">${d.label}</div>
+        <div style="flex:1;min-width:0;display:flex;height:20px;border-radius:5px;overflow:hidden;">
+          ${d.present?`<div style="width:${pW}%;background:var(--green);"></div>`:''}
+          ${d.half?`<div style="width:${hW}%;background:var(--orange);"></div>`:''}
+          ${d.absent?`<div style="width:${aW}%;background:var(--pink);"></div>`:''}
+        </div>
       </div>
-    </div>
-    <div style="font-size:12px;font-weight:500;color:var(--fg-3);width:32px;text-align:right;">${pct}%</div>
-  </div>`;
-}).join('');
+      <div style="display:flex;gap:8px;padding-left:70px;">
+        <span style="font-size:11px;color:var(--green);font-weight:600;">${d.present}P</span>
+        <span style="font-size:11px;color:var(--orange);font-weight:600;">${d.half}H</span>
+        <span style="font-size:11px;color:var(--pink);font-weight:600;">${d.absent}A</span>
+        ${d.late?`<span style="font-size:11px;color:#FF6400;margin-left:4px;">⏰ ${d.late} late</span>`:''}
+      </div>
+    </div>`;
+  }).join('');
 
-// Device usage bars
-renderBars('device-bars', deviceUsage, 264);
+  // Late bars
+  const lateEl = document.getElementById('late-bars');
+  const lateDays = days.filter(d=>d.late>0);
+  lateEl.innerHTML = lateDays.length ? lateDays.map(d=>{
+    const pct = (d.late/total*100).toFixed(0);
+    return `<div style="display:flex;align-items:center;gap:10px;">
+      <div style="font-size:12px;font-weight:500;color:var(--fg-2);width:60px;flex-shrink:0;">${d.label}</div>
+      <div style="flex:1;height:24px;background:var(--surface-2);border-radius:6px;overflow:hidden;">
+        <div style="width:${pct}%;height:100%;background:linear-gradient(90deg,#FF6B00,#FF9500);display:flex;align-items:center;padding-left:8px;">
+          <span style="font-size:11px;font-weight:600;color:white;white-space:nowrap;">${d.late} late</span>
+        </div>
+      </div>
+      <div style="font-size:12px;font-weight:500;color:var(--fg-3);width:32px;text-align:right;">${pct}%</div>
+    </div>`;
+  }).join('') : '<span style="font-size:13px;color:var(--fg-3);">No late arrivals in this period</span>';
+}
 
-// Absent both days
-document.getElementById('absent-list').innerHTML = absentBoth.map((n,i) =>
-  `<div style="display:flex;align-items:center;justify-content:space-between;padding:7px 0;${i<absentBoth.length-1?'border-bottom:1px solid var(--border);':''}">
-    <span style="font-size:13px;font-weight:500;color:var(--fg);">${n}</span>
-    <span style="font-size:11px;font-weight:600;padding:2px 8px;border-radius:20px;background:var(--pink-s);color:var(--pink);">2 days</span>
-  </div>`
-).join('');
+function renderLateTable(lateToday) {
+  document.getElementById('late-count').textContent = `${lateToday.length} total`;
+  document.querySelector('#late-table').innerHTML = lateToday.slice(0,10).map(([name,mins],i)=>`
+    <tr>
+      <td style="color:var(--fg);font-weight:500;font-size:13px;">${i+1}. ${name}</td>
+      <td><span class="gl-pill" style="background:${mins>60?'var(--pink-s)':mins>30?'var(--orange-s)':'var(--surface-2)'};color:${mins>60?'var(--pink)':mins>30?'var(--orange)':'var(--fg-3)'};">${mins} min</span></td>
+    </tr>`).join('');
+}
 
-// Late arrivals table
-const lateDetailData = [
-  ['Mahendra Kumar Sonker',104],['Kanchan Jha',59],['Monika Bhati',44],
-  ['Nisha',44],['Poonam Pal',44],['Suvranshu S. Rath',43],
-  ['Bhishma Prasad Yadav',41],['Kanhaiya Kumar Pandey',41],
-  ['Abhinav Kumar Vats',39],['Rashmi Soni',37]
-];
-document.querySelector('#late-table tbody').innerHTML = lateDetailData.map(([name,mins],i)=>`
-  <tr>
-    <td style="color:var(--fg);font-weight:500;font-size:13px;">${i+1}. ${name}</td>
-    <td>
-      <span class="gl-pill" style="background:${mins>60?'var(--pink-s)':mins>30?'var(--orange-s)':'var(--surface-2)'};color:${mins>60?'var(--pink)':mins>30?'var(--orange)':'var(--fg-3)'};">${mins} min</span>
-    </td>
-  </tr>`).join('');
+function renderAbsentList(absentAll) {
+  document.getElementById('absent-count').textContent = `${absentAll.length} staff`;
+  const el = document.getElementById('absent-list');
+  if(!absentAll.length){ el.innerHTML='<span style="font-size:13px;color:var(--fg-3);">None for this period</span>'; return; }
+  el.innerHTML = absentAll.map((n,i)=>`
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:7px 0;${i<absentAll.length-1?'border-bottom:1px solid var(--border);':''}">
+      <span style="font-size:13px;font-weight:500;color:var(--fg);">${n}</span>
+      <span style="font-size:11px;font-weight:600;padding:2px 8px;border-radius:20px;background:var(--pink-s);color:var(--pink);">All days</span>
+    </div>`).join('');
+}
 
-/* ── Trend SVG ── */
-(function(){
+function renderIndividualAtt(datt, nWorking) {
+  document.getElementById('indatt-days-badge').textContent = `${nWorking} working day${nWorking!==1?'s':''}`;
+  document.getElementById('repeat-late-badge').textContent = `Late all ${nWorking} working day${nWorking!==1?'s':''}`;
+
+  // Dept attendance rate bars
+  const deptEl = document.getElementById('deptAttBars');
+  deptEl.innerHTML = datt.deptAttRate.map(([label,pct])=>{
+    const color = pct>=80?'var(--green)':pct>=60?'var(--orange)':'var(--pink)';
+    return `<div class="bar-row">
+      <div class="bar-label" title="${label}">${label}</div>
+      <div class="bar-track"><div class="bar-fill" style="width:${pct}%;background:${color};"></div></div>
+      <div class="bar-val">${pct}%</div>
+    </div>`;
+  }).join('');
+
+  // Chronic absentees
+  document.getElementById('absenteeTbody').innerHTML = datt.absentees.map(([name,dept,abs,pres])=>`
+    <tr>
+      <td>${name}</td><td>${dept}</td>
+      <td style="text-align:center"><span style="color:var(--pink);font-weight:600">${abs}</span></td>
+      <td style="text-align:center">${pres}</td>
+    </tr>`).join('') || '<tr><td colspan="4" style="color:var(--fg-3);text-align:center;">None for this period</td></tr>';
+
+  // Repeat late
+  document.getElementById('lateTbody').innerHTML = datt.repeatLate.map(([name,dept,total,unpaid,pct])=>`
+    <tr>
+      <td>${name}</td><td>${dept}</td>
+      <td style="text-align:center"><span style="color:var(--orange);font-weight:600">${total}</span></td>
+      <td style="text-align:center">${unpaid>0?`<span style="color:var(--pink)">${unpaid}</span>`:'0'}</td>
+      <td style="text-align:center">${pct}</td>
+    </tr>`).join('') || '<tr><td colspan="5" style="color:var(--fg-3);text-align:center;">None for this period</td></tr>';
+}
+
+function renderDistribution(emps) {
+  document.getElementById('dept-count').textContent = `${emps.deptData.length} depts`;
+  renderBars('dept-bars', emps.deptData);
+  renderBars('role-bars', emps.roleData);
+  renderBars('desig-bars', emps.desigData);
+  document.getElementById('desig-count').textContent = `${Object.keys(emps.desigData).length} of ${emps.total}`;
+  renderBars('cat-bars', emps.catData);
+
+  // Gender donut
+  const male = emps.genderData['Male']||0;
+  const female = emps.genderData['Female']||0;
+  const total = male + female || 1;
+  const mAngle = male/total * 2 * Math.PI;
+  const circum = 2 * Math.PI * 30;
+  document.getElementById('gender-donut').innerHTML = `
+    <circle cx="40" cy="40" r="30" fill="none" stroke="var(--surface-2)" stroke-width="14"/>
+    <circle cx="40" cy="40" r="30" fill="none" stroke="var(--blue)" stroke-width="14"
+      stroke-dasharray="${(male/total*circum).toFixed(1)} ${circum.toFixed(1)}"
+      stroke-dashoffset="${(circum/4).toFixed(1)}" stroke-linecap="butt" transform="rotate(-90 40 40)"/>
+    <circle cx="40" cy="40" r="30" fill="none" stroke="var(--teal)" stroke-width="14"
+      stroke-dasharray="${(female/total*circum).toFixed(1)} ${circum.toFixed(1)}"
+      stroke-dashoffset="${(circum/4 - male/total*circum).toFixed(1)}" stroke-linecap="butt" transform="rotate(-90 40 40)"/>
+    <text x="40" y="37" text-anchor="middle" font-size="13" font-weight="700" fill="var(--fg)" font-family="Inter,sans-serif">${total}</text>
+    <text x="40" y="51" text-anchor="middle" font-size="8" fill="var(--fg-3)" font-family="Inter,sans-serif">staff</text>`;
+  document.getElementById('gender-legend').innerHTML = `
+    <div class="leg-row"><div class="leg-dot" style="background:var(--blue)"></div><span class="leg-label">Male</span><span class="leg-val" style="margin-left:12px;">${male}</span></div>
+    <div class="leg-row"><div class="leg-dot" style="background:var(--teal)"></div><span class="leg-label">Female</span><span class="leg-val" style="margin-left:12px;">${female}</span></div>
+    <div style="margin-top:4px;padding-top:8px;border-top:1px solid var(--border);">
+      <div class="leg-row"><span style="font-size:11px;color:var(--fg-3);">Ratio M:F</span><span style="font-size:12px;font-weight:600;margin-left:auto;">${Math.round(male/total*100)} : ${Math.round(female/total*100)}</span></div>
+    </div>`;
+}
+
+function renderHiringTrend(yearData) {
+  if(!yearData.length) return;
   const svg = document.getElementById('trend-svg');
-  const W = 800, H = 120, pad = {l:28,r:12,t:10,b:32};
-  const plotW = W - pad.l - pad.r;
-  const plotH = H - pad.t - pad.b;
-  const max = Math.max(...yearData.map(d=>d[1]));
-  const n = yearData.length;
-  const bw = plotW / n;
-
-  // Detect dark mode
-  const dark = window.matchMedia('(prefers-color-scheme:dark)').matches
-    || document.documentElement.dataset.theme === 'dark';
-
+  const W=800, H=120, pad={l:28,r:12,t:10,b:32};
+  const plotW=W-pad.l-pad.r, plotH=H-pad.t-pad.b;
+  const max = Math.max(...yearData.map(d=>+d[1]));
+  const n = yearData.length, bw = plotW/n;
+  const minYr = +yearData[0][0], maxYr = +yearData[yearData.length-1][0];
+  document.getElementById('trend-range').textContent = `${minYr} – ${maxYr}`;
   svg.setAttribute('viewBox',`0 0 ${W} ${H}`);
-
-  let bars = '';
-  let labels = '';
-  yearData.forEach(([yr,v],i) => {
-    const x = pad.l + i * bw;
-    const barH = (v/max) * plotH;
-    const y = pad.t + plotH - barH;
-    const isRecent = yr >= 2022;
-    const color = isRecent ? '#0066CC' : '#B0C8E8';
-    bars += `<rect x="${x+2}" y="${y}" width="${bw-4}" height="${barH}" rx="3" fill="${color}" opacity="${isRecent?1:0.7}"/>`;
-    if(yr % 3 === 0 || yr === 2026){
-      labels += `<text x="${x+bw/2}" y="${H-6}" text-anchor="middle" font-size="9" fill="var(--fg-3)" font-family="Inter,sans-serif">${yr}</text>`;
-    }
-    if(v >= 10){
-      labels += `<text x="${x+bw/2}" y="${y-4}" text-anchor="middle" font-size="9" font-weight="600" fill="${isRecent?'#0066CC':'var(--fg-3)'}" font-family="Inter,sans-serif">${v}</text>`;
-    }
+  let bars='', labels='';
+  yearData.forEach(([yr,v],i)=>{
+    const x=pad.l+i*bw, barH=(+v/max)*plotH, y=pad.t+plotH-barH;
+    const isRecent = +yr >= 2022;
+    bars += `<rect x="${x+2}" y="${y}" width="${bw-4}" height="${barH}" rx="3" fill="${isRecent?'#0066CC':'#B0C8E8'}" opacity="${isRecent?1:0.7}"/>`;
+    if(+yr%3===0||+yr===maxYr) labels += `<text x="${x+bw/2}" y="${H-6}" text-anchor="middle" font-size="9" fill="var(--fg-3)" font-family="Inter,sans-serif">${yr}</text>`;
+    if(+v>=6) labels += `<text x="${x+bw/2}" y="${y-4}" text-anchor="middle" font-size="9" font-weight="600" fill="${isRecent?'#0066CC':'var(--fg-3)'}" font-family="Inter,sans-serif">${v}</text>`;
   });
-
-  // Y axis ticks
-  let yAxis = '';
-  [0, Math.round(max/2), max].forEach(tick => {
-    const ty = pad.t + plotH - (tick/max)*plotH;
+  let yAxis='';
+  [0,Math.round(max/2),max].forEach(tick=>{
+    const ty=pad.t+plotH-(tick/max)*plotH;
     yAxis += `<line x1="${pad.l}" x2="${W-pad.r}" y1="${ty}" y2="${ty}" stroke="var(--border)" stroke-width="1"/>`;
     yAxis += `<text x="${pad.l-4}" y="${ty+3}" text-anchor="end" font-size="9" fill="var(--fg-3)" font-family="Inter,sans-serif">${tick}</text>`;
   });
+  svg.innerHTML = yAxis+bars+labels;
+}
 
-  svg.innerHTML = yAxis + bars + labels;
+function renderRecentStaff(recentEmps) {
+  const roleColors = {
+    teacher:['#EDF3FF','#0066CC'], manager:['#F0F7EE','#28A745'],
+    counselor:['#FFF4E6','#FF9500'], other:['#F5F0FF','#7B52EE'],
+    'non teaching':['#FEF0F4','#E91E8C'], 'supporting staff':['#E8FAF8','#00A693']
+  };
+  document.getElementById('emp-body').innerHTML = recentEmps.map(e=>{
+    const role = (e.role||['other'])[0];
+    const rc = roleColors[role.toLowerCase()] || ['#F2F2F7','#6E6E73'];
+    return `<tr>
+      <td>${e.name}<br><span class="emp-id">#${e.employeeId}</span></td>
+      <td>${e.employeeId}</td><td>${e.department}</td><td>${e.designation}</td>
+      <td><span class="role-pill" style="background:${rc[0]};color:${rc[1]}">${role}</span></td>
+      <td>${e.gender||'—'}</td>
+    </tr>`;
+  }).join('') || '<tr><td colspan="6" style="color:var(--fg-3);text-align:center;">No joiners in 2026</td></tr>';
+}
+
+function renderQualChips(emps) {
+  const quals = new Set();
+  emps.recentEmps.forEach(e=>(e.qualifications||[]).forEach(q=>{ if(q.degree) quals.add(q.degree); }));
+  const display = quals.size ? [...quals].slice(0,8) : ['10th','12th','UG','PG','Doctorate','Others'];
+  document.getElementById('qual-chips').innerHTML = display.map(q=>`<span class="chip">${q}</span>`).join('');
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   Main loader
+════════════════════════════════════════════════════════════════════ */
+let masterEmps = null; // cached — only fetched once
+
+async function loadData(start, end) {
+  setStatus('<span class="spin"></span>Loading…');
+  hideErr();
+
+  try {
+    // Fetch employees once (static data)
+    if(!masterEmps) {
+      masterEmps = await apiGet(`/api/list/employee?entity=${ENTITY}`);
+    }
+
+    // Parallel fetch of time-range-sensitive data
+    const [wtRaw, dattRaw] = await Promise.all([
+      apiPost('/api/workingTimeDetailsReport/employeeAttendance', { entity: ENTITY, startDate: toISO(start), endDate: toISO(end) }),
+      apiPost('/api/dailyAttendanceReport/employeeAttendance', { entity: ENTITY, startDate: toISO(start), endDate: toISO(end) })
+    ]);
+
+    // Process
+    const emps = processEmployees(masterEmps);
+    const wt   = processWorkingTime(wtRaw);
+    const datt = processDailyAtt(dattRaw);
+
+    // Update section labels
+    const rangeLabel = `${fmtDate(start)} – ${fmtDate(end)}`;
+    document.getElementById('week-label').textContent = `Attendance · ${rangeLabel}`;
+    document.getElementById('wt-label').textContent = `Working Time · ${rangeLabel}`;
+    document.getElementById('indatt-label').textContent = `Individual Attendance · ${rangeLabel}`;
+    document.getElementById('kpi-avghrs-lbl').textContent = 'Avg Hours / period';
+    document.getElementById('kpi-avghrs-sub').textContent = `~${(wt.avgHours/Math.max(datt.nWorking,1)).toFixed(1)}h per day`;
+
+    // Render all
+    renderHero(datt, wt);
+    renderKPIs(emps, wt);
+    renderStackedChart(datt);
+    renderLateTable(datt.lateToday);
+    renderAbsentList(datt.absentAll);
+    renderBars('top-hours-bars', wt.topHours, null, '<span style="font-size:10px;color:var(--fg-3);">h</span>');
+    renderBars('dept-hours-bars', wt.deptHours, null, '<span style="font-size:10px;color:var(--fg-3);">h</span>');
+    renderBars('device-bars', wt.deviceUsage);
+    document.getElementById('bio-count').textContent = wt.biometricCount;
+    document.getElementById('nopunch-count').textContent = wt.noPunchCount;
+    renderIndividualAtt(datt, datt.nWorking);
+    renderDistribution(emps);
+    renderHiringTrend(emps.yearData);
+    renderRecentStaff(emps.recentEmps);
+    renderQualChips(emps);
+
+    // Update working time card badges
+    document.getElementById('wt-period').textContent = rangeLabel;
+    document.getElementById('wt-period2').textContent = rangeLabel;
+
+    // Footer
+    document.getElementById('footer-sync').textContent = `Last sync: ${new Date().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'})}`;
+    document.getElementById('footer-range').textContent = rangeLabel;
+
+    setStatus('');
+  } catch(err) {
+    console.error(err);
+    setStatus('');
+    showErr(`Failed to load data (${err.message}). Check network or try the deployed version at hrdashboard-h575.vercel.app`);
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   Date picker wiring
+════════════════════════════════════════════════════════════════════ */
+function setStatus(html) { document.getElementById('dpr-status').innerHTML = html; }
+function showErr(msg) { const e=document.getElementById('err-banner'); e.textContent=msg; e.classList.add('show'); document.getElementById('dpr-err').textContent='⚠ Failed'; document.getElementById('dpr-err').style.display=''; }
+function hideErr() { document.getElementById('err-banner').classList.remove('show'); document.getElementById('dpr-err').style.display='none'; }
+
+function setDateInputs(start, end) {
+  document.getElementById('dpr-start').value = toISO(start);
+  document.getElementById('dpr-end').value   = toISO(end);
+}
+
+function activatePreset(preset) {
+  document.querySelectorAll('.dpr-btn').forEach(b=>b.classList.remove('active'));
+  const btn = document.querySelector(`.dpr-btn[data-preset="${preset}"]`);
+  if(btn) btn.classList.add('active');
+}
+
+function rangeFromPreset(preset) {
+  if(preset==='today') return getTodayRange();
+  if(preset==='week')  return getWeekRange();
+  if(preset==='7d')    return getLast7();
+  if(preset==='month') return getMonthRange();
+  return getWeekRange();
+}
+
+document.querySelectorAll('.dpr-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const preset = btn.dataset.preset;
+    activatePreset(preset);
+    const { start, end } = rangeFromPreset(preset);
+    setDateInputs(start, end);
+    loadData(start, end);
+  });
+});
+
+document.getElementById('dpr-apply').addEventListener('click', () => {
+  const s = document.getElementById('dpr-start').value;
+  const e = document.getElementById('dpr-end').value;
+  if(!s || !e) return;
+  activatePreset('');
+  loadData(new Date(s+'T00:00:00'), new Date(e+'T00:00:00'));
+});
+
+/* ── Init ── */
+(function init() {
+  const { start, end } = getWeekRange();
+  setDateInputs(start, end);
+  loadData(start, end);
 })();
-
-/* ── Working time report ── */
-const topHoursData = [
-  ['AJAY KR. SHARMA (HOSTEL)',32.73],['Yogesh Kr. Sharma (ADMIN)',26.83],
-  ['VISHAL (PHARMACY)',25.08],['Shubham Kr. Sajan (BCA)',24.85],
-  ['Amit Kr. Yadav (ME)',24.75],['Bhure Singh (REGISTRAR)',24.68],
-  ['Shubh Kant Yadav (CE)',24.68],['Nempal Singh (AS)',24.52],
-  ['Kajal Chaudhary (PHARMACY)',24.4],['shyamvir (EE)',24.33]
-];
-const deptHoursData = [
-  ['HOSTEL',32.73],['CE',24.68],['BCA',23.88],['LIBRARY',23.68],
-  ['PLACEMENT CELL',23.28],['ME',23.08],['MCA',22.92],['MBA',20.66],
-  ['AS',20.61],['ACCOUNTS',20.34],['EE',20.18],['IT',19.92]
-];
-renderBars('top-hours-bars', topHoursData, 32.73);
-renderBars('dept-hours-bars', deptHoursData, 32.73);
-
-/* ── Individual Attendance Report (Nov 1–4, 3 working days) ── */
-const deptAttData = [
-  ['CE',100],['LIBRARY',100],['BCA',94],['IT',80],['ME',80],
-  ['AS',79],['PHARMACY',75],['MBA',74],['CSE',71],['IHM',67],
-  ['PLACEMENT CELL',67],['ADMIN',64],['EE',62],['MCA',61],
-  ['REGISTRAR OFFICE',61],['ADMISSION CELL',39],['ACCOUNTS',37],
-  ['Accounts',0],['Accounts & HR',0],['HOSTEL',0]
-];
-const deptAttEl = document.getElementById('deptAttBars');
-deptAttEl.innerHTML = deptAttData.map(([label,pct])=>{
-  const color = pct>=80?'var(--green)':pct>=60?'var(--orange)':'var(--pink)';
-  return `<div class="bar-row">
-    <div class="bar-label" title="${label}">${label}</div>
-    <div class="bar-track">
-      <div class="bar-fill" style="width:${pct}%;background:${color};"></div>
-    </div>
-    <div class="bar-val">${pct}%</div>
-  </div>`;
-}).join('');
-
-const absentees = [
-  ['Bhanu P.S. Sagar','PHARMACY',4,0],
-  ['Sagrrika Gupta','MBA',4,0],
-  ['Shipra Singh','CSE',4,0],
-  ['Abhijit Kumar','Accounts',4,0],
-  ['Sujit Kumar Mishra','Accounts & HR',4,0],
-  ['Navin Gupta','ADMIN',4,0],
-  ['AJAY KUMAR SHARMA','HOSTEL',4,0],
-  ['Vipin Kr. Kushwaha','IT',3.5,0.5],
-  ['Monika Bhati','ADMISSION CELL',3.5,0.5],
-  ['Rashmi Soni','ADMISSION CELL',3.5,0.5],
-  ['Shahina Anjum','ADMISSION CELL',3,1],
-  ['Tanya Singh','CSE',3,1],
-  ['Devendra Pratap Singh','ADMISSION CELL',3,1],
-  ['Sandeep Gupta','MBA',2.5,1.5],
-  ['Pankaj Agarwal','PHARMACY',2.5,1.5],
-];
-document.getElementById('absenteeTbody').innerHTML = absentees.map(([name,dept,abs,pres])=>`
-  <tr>
-    <td>${name}</td><td>${dept}</td>
-    <td style="text-align:center"><span style="color:var(--pink);font-weight:600">${abs}</span></td>
-    <td style="text-align:center">${pres}</td>
-  </tr>`).join('');
-
-const lateAll = [
-  ['Bibhuti Sharan','CSE',3,1,'50%'],
-  ['Madhav Prasad','MCA',3,3,'61%'],
-  ['Akanksha Raghuvanshi','PHARMACY',3,3,'75%'],
-  ['Sneha Bharti','PHARMACY',3,3,'75%'],
-  ['Rajkumar Mishra','PHARMACY',3,1,'75%'],
-  ['Snehil Singh','PHARMACY',3,1,'75%'],
-  ['Shakti Prakash','MBA',3,3,'74%'],
-  ['Dinesh Kumar Rana','MBA',3,1,'74%'],
-  ['Vinay Gupta','ME',3,3,'80%'],
-  ['Sunil Kumar','EE',3,3,'62%'],
-  ['Bhishma Prasad Yadav','ACCOUNTS',3,3,'37%'],
-  ['Kanhaiya Kumar Pandey','ACCOUNTS',3,3,'37%'],
-  ['Harendra Kumar Ojha','ACCOUNTS',3,3,'37%'],
-  ['Suvranshu Sekhar Rath','ACCOUNTS',3,3,'37%'],
-  ['Nisha','ADMISSION CELL',3,3,'39%'],
-  ['Abhinav Kumar Vats','ADMISSION CELL',3,3,'39%'],
-  ['Poonam Pal','ADMISSION CELL',3,3,'39%'],
-  ['DEEKSHA CHAUHAN','MBA',3,3,'74%'],
-  ['TANISHA GUPTA','ADMISSION CELL',3,3,'39%'],
-  ['ARUNA SHARMA','ADMISSION CELL',3,3,'39%'],
-];
-document.getElementById('lateTbody').innerHTML = lateAll.map(([name,dept,total,unpaid,attPct])=>`
-  <tr>
-    <td>${name}</td><td>${dept}</td>
-    <td style="text-align:center"><span style="color:var(--orange);font-weight:600">${total}</span></td>
-    <td style="text-align:center">${unpaid>0?`<span style="color:var(--pink)">${unpaid}</span>`:'0'}</td>
-    <td style="text-align:center">${attPct}</td>
-  </tr>`).join('');
-
-/* ── Employee table ── */
-const roleColors = {
-  teacher:['#EDF3FF','#0066CC'], manager:['#F0F7EE','#28A745'],
-  counselor:['#FFF4E6','#FF9500'], other:['#F5F0FF','#7B52EE'],
-  'non teaching':['#FEF0F4','#E91E8C'], 'supporting staff':['#E8FAF8','#00A693']
-};
-const tbody = document.getElementById('emp-body');
-tbody.innerHTML = recentEmps.map(([name,id,dept,desig,role,gender])=>{
-  const rc = roleColors[role.toLowerCase()] || ['#F2F2F7','#6E6E73'];
-  return `<tr>
-    <td>${name}<br><span class="emp-id">#${id}</span></td>
-    <td>${id}</td>
-    <td>${dept}</td>
-    <td>${desig}</td>
-    <td><span class="role-pill" style="background:${rc[0]};color:${rc[1]}">${role}</span></td>
-    <td>${gender}</td>
-  </tr>`;
-}).join('');
 </script>
