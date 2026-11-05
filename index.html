@@ -158,6 +158,10 @@ body{
   font-size:12px;font-weight:500;color:var(--fg-3);
   background:var(--surface-2);border-radius:20px;padding:2px 8px;
 }
+.card-badge{font-size:11px;font-weight:500;padding:2px 8px;border-radius:20px;background:var(--surface-2);color:var(--fg-3);}
+.badge-red{background:var(--pink-s);color:var(--pink);}
+.badge-orange{background:var(--orange-s);color:var(--orange);}
+.tbl-wrap{overflow-x:auto;}
 
 /* ── Horizontal bar chart ─────────────────────────────────────────── */
 .bar-list{display:flex;flex-direction:column;gap:7px;}
@@ -620,6 +624,31 @@ body{
   </table>
 </div>
 
+<!-- INDIVIDUAL ATTENDANCE REPORT -->
+<p class="section-label">Individual Attendance · Nov 1–4</p>
+<div class="grid-2">
+  <!-- Dept Attendance % -->
+  <div class="card">
+    <div class="card-hd"><span class="card-title">Dept Attendance Rate</span><span class="card-badge">3 working days</span></div>
+    <div id="deptAttBars"></div>
+  </div>
+  <!-- Chronic Absentees -->
+  <div class="card">
+    <div class="card-hd"><span class="card-title">Chronic Absentees</span><span class="card-badge badge-red">≥2 absent days</span></div>
+    <div class="tbl-wrap"><table class="data-tbl">
+      <thead><tr><th>Employee</th><th>Dept</th><th style="text-align:center">Abs</th><th style="text-align:center">Pres</th></tr></thead>
+      <tbody id="absenteeTbody"></tbody>
+    </table></div>
+  </div>
+</div>
+<div class="card" style="margin-top:16px">
+  <div class="card-hd"><span class="card-title">Repeat Late Arrivals</span><span class="card-badge badge-orange">Late all 3 working days</span></div>
+  <div class="tbl-wrap"><table class="data-tbl">
+    <thead><tr><th>Employee</th><th>Dept</th><th style="text-align:center">Total Late</th><th style="text-align:center">Unpaid Lates</th><th style="text-align:center">Attendance %</th></tr></thead>
+    <tbody id="lateTbody"></tbody>
+  </table></div>
+</div>
+
 <!-- FOOTER -->
 <div class="footer">
   <span class="footer-txt">Entity: 693f884a77ec4d000eb9a03e</span>
@@ -834,6 +863,80 @@ const deptHoursData = [
 ];
 renderBars('top-hours-bars', topHoursData, 32.73);
 renderBars('dept-hours-bars', deptHoursData, 32.73);
+
+/* ── Individual Attendance Report (Nov 1–4, 3 working days) ── */
+const deptAttData = [
+  ['CE',100],['LIBRARY',100],['BCA',94],['IT',80],['ME',80],
+  ['AS',79],['PHARMACY',75],['MBA',74],['CSE',71],['IHM',67],
+  ['PLACEMENT CELL',67],['ADMIN',64],['EE',62],['MCA',61],
+  ['REGISTRAR OFFICE',61],['ADMISSION CELL',39],['ACCOUNTS',37],
+  ['Accounts',0],['Accounts & HR',0],['HOSTEL',0]
+];
+const deptAttEl = document.getElementById('deptAttBars');
+deptAttEl.innerHTML = deptAttData.map(([label,pct])=>{
+  const color = pct>=80?'var(--green)':pct>=60?'var(--orange)':'var(--pink)';
+  return `<div class="bar-row">
+    <div class="bar-label" title="${label}">${label}</div>
+    <div class="bar-track">
+      <div class="bar-fill" style="width:${pct}%;background:${color};"></div>
+    </div>
+    <div class="bar-val">${pct}%</div>
+  </div>`;
+}).join('');
+
+const absentees = [
+  ['Bhanu P.S. Sagar','PHARMACY',4,0],
+  ['Sagrrika Gupta','MBA',4,0],
+  ['Shipra Singh','CSE',4,0],
+  ['Abhijit Kumar','Accounts',4,0],
+  ['Sujit Kumar Mishra','Accounts & HR',4,0],
+  ['Navin Gupta','ADMIN',4,0],
+  ['AJAY KUMAR SHARMA','HOSTEL',4,0],
+  ['Vipin Kr. Kushwaha','IT',3.5,0.5],
+  ['Monika Bhati','ADMISSION CELL',3.5,0.5],
+  ['Rashmi Soni','ADMISSION CELL',3.5,0.5],
+  ['Shahina Anjum','ADMISSION CELL',3,1],
+  ['Tanya Singh','CSE',3,1],
+  ['Devendra Pratap Singh','ADMISSION CELL',3,1],
+  ['Sandeep Gupta','MBA',2.5,1.5],
+  ['Pankaj Agarwal','PHARMACY',2.5,1.5],
+];
+document.getElementById('absenteeTbody').innerHTML = absentees.map(([name,dept,abs,pres])=>`
+  <tr>
+    <td>${name}</td><td>${dept}</td>
+    <td style="text-align:center"><span style="color:var(--pink);font-weight:600">${abs}</span></td>
+    <td style="text-align:center">${pres}</td>
+  </tr>`).join('');
+
+const lateAll = [
+  ['Bibhuti Sharan','CSE',3,1,'50%'],
+  ['Madhav Prasad','MCA',3,3,'61%'],
+  ['Akanksha Raghuvanshi','PHARMACY',3,3,'75%'],
+  ['Sneha Bharti','PHARMACY',3,3,'75%'],
+  ['Rajkumar Mishra','PHARMACY',3,1,'75%'],
+  ['Snehil Singh','PHARMACY',3,1,'75%'],
+  ['Shakti Prakash','MBA',3,3,'74%'],
+  ['Dinesh Kumar Rana','MBA',3,1,'74%'],
+  ['Vinay Gupta','ME',3,3,'80%'],
+  ['Sunil Kumar','EE',3,3,'62%'],
+  ['Bhishma Prasad Yadav','ACCOUNTS',3,3,'37%'],
+  ['Kanhaiya Kumar Pandey','ACCOUNTS',3,3,'37%'],
+  ['Harendra Kumar Ojha','ACCOUNTS',3,3,'37%'],
+  ['Suvranshu Sekhar Rath','ACCOUNTS',3,3,'37%'],
+  ['Nisha','ADMISSION CELL',3,3,'39%'],
+  ['Abhinav Kumar Vats','ADMISSION CELL',3,3,'39%'],
+  ['Poonam Pal','ADMISSION CELL',3,3,'39%'],
+  ['DEEKSHA CHAUHAN','MBA',3,3,'74%'],
+  ['TANISHA GUPTA','ADMISSION CELL',3,3,'39%'],
+  ['ARUNA SHARMA','ADMISSION CELL',3,3,'39%'],
+];
+document.getElementById('lateTbody').innerHTML = lateAll.map(([name,dept,total,unpaid,attPct])=>`
+  <tr>
+    <td>${name}</td><td>${dept}</td>
+    <td style="text-align:center"><span style="color:var(--orange);font-weight:600">${total}</span></td>
+    <td style="text-align:center">${unpaid>0?`<span style="color:var(--pink)">${unpaid}</span>`:'0'}</td>
+    <td style="text-align:center">${attPct}</td>
+  </tr>`).join('');
 
 /* ── Employee table ── */
 const roleColors = {
