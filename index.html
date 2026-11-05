@@ -1,0 +1,865 @@
+<title>IECC HRM Dashboard</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap">
+
+<style>
+/* ── Design tokens ─────────────────────────────────────────────────── */
+:root {
+  --bg:          #F5F5F7;
+  --surface:     #FFFFFF;
+  --surface-2:   #F2F2F7;
+  --border:      rgba(0,0,0,0.07);
+  --fg:          #1D1D1F;
+  --fg-2:        #3D3D3F;
+  --fg-3:        #6E6E73;
+  --accent:      #0066CC;
+  --accent-soft: rgba(0,102,204,0.10);
+  --blue:        #0066CC;
+  --blue-s:      rgba(0,102,204,0.12);
+  --green:       #28A745;
+  --green-s:     rgba(40,167,69,0.12);
+  --orange:      #FF9500;
+  --orange-s:    rgba(255,149,0,0.12);
+  --purple:      #7B52EE;
+  --purple-s:    rgba(123,82,238,0.12);
+  --pink:        #E91E8C;
+  --pink-s:      rgba(233,30,140,0.10);
+  --teal:        #00A693;
+  --teal-s:      rgba(0,166,147,0.12);
+  --shadow-xs:   0 1px 2px rgba(0,0,0,0.05);
+  --shadow-sm:   0 1px 4px rgba(0,0,0,0.06), 0 2px 8px rgba(0,0,0,0.04);
+  --r:           16px;
+  --r-sm:        10px;
+  --r-xs:        7px;
+  --font: "Inter", ui-sans-serif, -apple-system, sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#000; --surface:#1C1C1E; --surface-2:#2C2C2E;
+    --border:rgba(255,255,255,0.09);
+    --fg:#F5F5F7; --fg-2:#AEAEB2; --fg-3:#636366;
+    --accent:#0A84FF; --accent-soft:rgba(10,132,255,0.15);
+    --blue:#0A84FF; --blue-s:rgba(10,132,255,0.16);
+    --green:#34C759; --green-s:rgba(52,199,89,0.16);
+    --orange:#FF9F0A; --orange-s:rgba(255,159,10,0.16);
+    --purple:#BF5AF2; --purple-s:rgba(191,90,242,0.16);
+    --pink:#FF375F; --pink-s:rgba(255,55,95,0.14);
+    --teal:#5AC8FA; --teal-s:rgba(90,200,250,0.14);
+    --shadow-xs:0 1px 2px rgba(0,0,0,0.3); --shadow-sm:0 2px 8px rgba(0,0,0,0.4);
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#000; --surface:#1C1C1E; --surface-2:#2C2C2E;
+  --border:rgba(255,255,255,0.09);
+  --fg:#F5F5F7; --fg-2:#AEAEB2; --fg-3:#636366;
+  --accent:#0A84FF; --accent-soft:rgba(10,132,255,0.15);
+  --blue:#0A84FF; --blue-s:rgba(10,132,255,0.16);
+  --green:#34C759; --green-s:rgba(52,199,89,0.16);
+  --orange:#FF9F0A; --orange-s:rgba(255,159,10,0.16);
+  --purple:#BF5AF2; --purple-s:rgba(191,90,242,0.16);
+  --pink:#FF375F; --pink-s:rgba(255,55,95,0.14);
+  --teal:#5AC8FA; --teal-s:rgba(90,200,250,0.14);
+  --shadow-xs:0 1px 2px rgba(0,0,0,0.3); --shadow-sm:0 2px 8px rgba(0,0,0,0.4);
+  color-scheme:dark;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:var(--font); background:var(--bg); color:var(--fg);
+  font-size:14px; line-height:1.5; -webkit-font-smoothing:antialiased;
+  padding-left:max(16px,env(safe-area-inset-left,0px));
+  padding-right:max(16px,env(safe-area-inset-right,0px));
+  padding-block:0 40px;
+}
+
+/* ── Sticky header ─────────────────────────────────────────────────── */
+.hdr{
+  position:sticky; top:env(safe-area-inset-top,0px); z-index:30;
+  background:rgba(245,245,247,0.82);
+  backdrop-filter:saturate(180%) blur(24px);
+  -webkit-backdrop-filter:saturate(180%) blur(24px);
+  border-bottom:1px solid var(--border);
+  margin-left:max(-16px,calc(-1 * env(safe-area-inset-left,0px)));
+  margin-right:max(-16px,calc(-1 * env(safe-area-inset-right,0px)));
+  padding-left:max(20px,env(safe-area-inset-left,0px));
+  padding-right:max(20px,env(safe-area-inset-right,0px));
+  padding-block:12px;
+}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]) .hdr{background:rgba(0,0,0,0.80);}}
+:root[data-theme="dark"] .hdr{background:rgba(0,0,0,0.80);}
+.hdr-in{max-width:1120px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;}
+.hdr-brand{display:flex;align-items:center;gap:10px;}
+.hdr-logo{
+  width:34px;height:34px;border-radius:9px;background:var(--blue);
+  display:grid;place-items:center;flex-shrink:0;
+}
+.hdr-logo svg{width:18px;height:18px;fill:white;}
+.hdr-name{font-size:14px;font-weight:600;letter-spacing:-0.01em;}
+.hdr-sub{font-size:11px;color:var(--fg-3);}
+.hdr-right{display:flex;align-items:center;gap:8px;}
+.badge{
+  display:inline-flex;align-items:center;gap:5px;
+  font-size:11.5px;font-weight:500;padding:4px 10px;border-radius:20px;
+}
+.badge-green{background:var(--green-s);color:var(--green);}
+.badge-dot{width:6px;height:6px;border-radius:50%;background:var(--green);}
+.badge-blue{background:var(--blue-s);color:var(--blue);}
+
+/* ── Page wrap ─────────────────────────────────────────────────────── */
+.page{max-width:1120px;margin:0 auto;padding-top:24px;}
+.section-label{
+  font-size:11px;font-weight:600;letter-spacing:0.07em;
+  text-transform:uppercase;color:var(--fg-3);
+  margin-bottom:10px;margin-top:28px;
+}
+.section-label:first-child{margin-top:0;}
+
+/* ── Stat tiles ─────────────────────────────────────────────────────── */
+.stat-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;}
+.stat{
+  background:var(--surface);border-radius:var(--r);
+  padding:18px 20px;border:1px solid var(--border);
+  box-shadow:var(--shadow-xs);
+  display:flex;flex-direction:column;gap:6px;
+}
+.stat-ic{
+  width:34px;height:34px;border-radius:var(--r-xs);
+  display:grid;place-items:center;margin-bottom:2px;
+}
+.stat-ic svg{width:17px;height:17px;}
+.stat-n{font-size:34px;font-weight:700;letter-spacing:-0.03em;line-height:1;font-variant-numeric:tabular-nums;}
+.stat-l{font-size:12px;color:var(--fg-3);}
+.ic-b{background:var(--blue-s);color:var(--blue);}
+.ic-g{background:var(--green-s);color:var(--green);}
+.ic-o{background:var(--orange-s);color:var(--orange);}
+.ic-p{background:var(--purple-s);color:var(--purple);}
+.ic-pk{background:var(--pink-s);color:var(--pink);}
+.ic-t{background:var(--teal-s);color:var(--teal);}
+
+/* ── 2-col / 3-col grids ─────────────────────────────────────────── */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;}
+.g32{display:grid;grid-template-columns:2fr 1fr;gap:10px;}
+@media(max-width:720px){.g2,.g3,.g32{grid-template-columns:1fr;}}
+
+/* ── Card ───────────────────────────────────────────────────────────── */
+.card{
+  background:var(--surface);border-radius:var(--r);
+  padding:18px 20px;border:1px solid var(--border);
+  box-shadow:var(--shadow-xs);
+}
+.card-hd{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:14px;
+}
+.card-title{font-size:14px;font-weight:600;letter-spacing:-0.01em;}
+.card-count{
+  font-size:12px;font-weight:500;color:var(--fg-3);
+  background:var(--surface-2);border-radius:20px;padding:2px 8px;
+}
+
+/* ── Horizontal bar chart ─────────────────────────────────────────── */
+.bar-list{display:flex;flex-direction:column;gap:7px;}
+.bar-row{display:flex;align-items:center;gap:8px;}
+.bar-label{font-size:12px;color:var(--fg-2);width:120px;flex-shrink:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.bar-track{flex:1;height:7px;background:var(--surface-2);border-radius:4px;overflow:hidden;min-width:0;}
+.bar-fill{height:100%;border-radius:4px;transition:width .4s ease;}
+.bar-val{font-size:12px;font-weight:500;font-variant-numeric:tabular-nums;color:var(--fg-3);width:24px;text-align:right;flex-shrink:0;}
+
+/* ── Donut ──────────────────────────────────────────────────────────── */
+.donut-wrap{display:flex;align-items:center;gap:20px;flex-wrap:wrap;}
+.donut-legend{display:flex;flex-direction:column;gap:9px;}
+.leg-row{display:flex;align-items:center;gap:8px;}
+.leg-dot{width:10px;height:10px;border-radius:3px;flex-shrink:0;}
+.leg-label{font-size:12.5px;color:var(--fg-2);}
+.leg-val{font-size:12px;font-weight:600;color:var(--fg);margin-left:auto;font-variant-numeric:tabular-nums;}
+.donut-legend{flex:1;}
+
+/* ── Trend chart (SVG bar) ─────────────────────────────────────────── */
+.trend-svg{width:100%;overflow:visible;}
+
+/* ── Employee table ─────────────────────────────────────────────────── */
+.emp-table{width:100%;border-collapse:collapse;min-width:0;}
+.emp-table th{
+  font-size:11px;font-weight:600;letter-spacing:0.04em;
+  text-transform:uppercase;color:var(--fg-3);
+  text-align:left;padding:0 8px 10px;border-bottom:1px solid var(--border);
+}
+.emp-table td{
+  font-size:13px;color:var(--fg-2);
+  padding:9px 8px;border-bottom:1px solid var(--border);
+  vertical-align:middle;
+}
+.emp-table tr:last-child td{border-bottom:none;}
+.emp-table td:first-child{color:var(--fg);font-weight:500;}
+.emp-id{font-size:11px;color:var(--fg-3);font-variant-numeric:tabular-nums;}
+.role-pill{
+  display:inline-block;font-size:11px;font-weight:500;
+  padding:2px 8px;border-radius:20px;white-space:nowrap;
+}
+
+/* ── Stacked bar ─────────────────────────────────────────────────── */
+.sbar-row{display:flex;align-items:center;gap:10px;margin-bottom:4px;}
+.sbar-day{font-size:12px;font-weight:500;color:var(--fg-2);width:70px;flex-shrink:0;}
+.sbar-track{flex:1;height:20px;border-radius:5px;overflow:hidden;display:flex;min-width:0;}
+.sbar-seg{height:100%;transition:width .4s;}
+.sbar-labels{display:flex;gap:6px;padding-left:80px;margin-bottom:10px;}
+.sbar-lbl{font-size:11px;color:var(--fg-3);font-variant-numeric:tabular-nums;}
+
+/* ── Device mini card ────────────────────────────────────────────── */
+.dev-mini{display:flex;align-items:center;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border);}
+.dev-mini:last-child{border-bottom:none;}
+.dev-mini-id{font-size:12px;font-family:ui-monospace,monospace;color:var(--accent);font-weight:600;}
+
+/* ── Absent row ──────────────────────────────────────────────────── */
+.abs-row{display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);}
+.abs-row:last-child{border-bottom:none;}
+.abs-name{font-size:13px;font-weight:500;color:var(--fg);}
+.abs-badge{font-size:11px;font-weight:600;padding:2px 8px;border-radius:20px;background:var(--pink-s);color:var(--pink);}
+
+/* ── Late bar ───────────────────────────────────────────────────── */
+.late-row{display:flex;align-items:center;gap:10px;}
+.late-day{font-size:12px;font-weight:500;color:var(--fg-2);width:80px;flex-shrink:0;}
+.late-track{flex:1;height:28px;background:var(--surface-2);border-radius:6px;overflow:hidden;display:flex;align-items:center;}
+.late-fill{height:100%;border-radius:6px;display:flex;align-items:center;padding-left:10px;}
+.late-label{font-size:12px;font-weight:600;color:white;white-space:nowrap;}
+.late-pct{font-size:12px;font-weight:500;color:var(--fg-3);width:36px;text-align:right;flex-shrink:0;}
+
+/* ── Chip ───────────────────────────────────────────────────────────── */
+.chips{display:flex;flex-wrap:wrap;gap:6px;}
+.chip{
+  font-size:12px;font-weight:500;color:var(--fg-2);
+  background:var(--surface-2);border:1px solid var(--border);
+  border-radius:20px;padding:4px 11px;
+}
+
+/* ── Footer ─────────────────────────────────────────────────────────── */
+.footer{
+  margin-top:28px;padding-top:16px;border-top:1px solid var(--border);
+  display:flex;justify-content:space-between;flex-wrap:wrap;gap:6px;
+}
+.footer-txt{font-size:11px;color:var(--fg-3);}
+</style>
+
+<!-- HEADER -->
+<div class="hdr">
+  <div class="hdr-in">
+    <div class="hdr-brand">
+      <div class="hdr-logo">
+        <svg viewBox="0 0 24 24"><path d="M12 3L1 9l11 6 9-4.91V17h2V9L12 3zM5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82z"/></svg>
+      </div>
+      <div>
+        <div class="hdr-name">IEC College of Engineering &amp; Technology</div>
+        <div class="hdr-sub">HRM Dashboard · IECC · Session: Payment Recovery 26-27</div>
+      </div>
+    </div>
+    <div class="hdr-right">
+      <span class="badge badge-green"><span class="badge-dot"></span>119 Active</span>
+      <span class="badge badge-blue">Live data</span>
+    </div>
+  </div>
+</div>
+
+<div class="page">
+
+<!-- ── OVERVIEW STATS ── -->
+<p class="section-label">Workforce Overview</p>
+<div class="stat-row">
+  <div class="stat">
+    <div class="stat-ic ic-b">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
+    </div>
+    <div class="stat-n">119</div>
+    <div class="stat-l">Total Employees</div>
+  </div>
+  <div class="stat">
+    <div class="stat-ic ic-g">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg>
+    </div>
+    <div class="stat-n">119</div>
+    <div class="stat-l">Active Staff</div>
+  </div>
+  <div class="stat">
+    <div class="stat-ic ic-p">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3L1 9l11 6 9-4.91V17h2V9L12 3zM5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82z"/></svg>
+    </div>
+    <div class="stat-n">77</div>
+    <div class="stat-l">Teaching Staff</div>
+  </div>
+  <div class="stat">
+    <div class="stat-ic ic-o">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5S10.62 6.5 12 6.5s2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+    </div>
+    <div class="stat-n">20</div>
+    <div class="stat-l">Departments</div>
+  </div>
+  <div class="stat">
+    <div class="stat-ic ic-pk">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+    </div>
+    <div class="stat-n">66</div>
+    <div class="stat-l">Male</div>
+  </div>
+  <div class="stat">
+    <div class="stat-ic ic-t">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+    </div>
+    <div class="stat-n">53</div>
+    <div class="stat-l">Female</div>
+  </div>
+</div>
+
+<!-- ── DEPT + ROLES ── -->
+<p class="section-label">Distribution</p>
+<div class="g32">
+
+  <!-- Department chart -->
+  <div class="card">
+    <div class="card-hd">
+      <span class="card-title">By Department</span>
+      <span class="card-count">20 depts</span>
+    </div>
+    <div class="bar-list" id="dept-bars"></div>
+  </div>
+
+  <!-- Role + Gender stacked -->
+  <div style="display:flex;flex-direction:column;gap:10px;">
+    <div class="card">
+      <div class="card-hd">
+        <span class="card-title">By Role</span>
+        <span class="card-count">6 roles</span>
+      </div>
+      <div class="bar-list" id="role-bars"></div>
+    </div>
+    <div class="card">
+      <div class="card-hd">
+        <span class="card-title">Gender</span>
+      </div>
+      <div class="donut-wrap">
+        <svg viewBox="0 0 80 80" width="80" height="80" style="flex-shrink:0;">
+          <circle cx="40" cy="40" r="30" fill="none" stroke="var(--surface-2)" stroke-width="14"/>
+          <!-- Male 66/119 = 55.5% → 207.3° → dasharray 311.02 out of 188.5*2π/360... let me compute -->
+          <!-- circumference = 2π*30 = 188.5 -->
+          <!-- male: 66/119 * 188.5 = 104.6 -->
+          <!-- female: 53/119 * 188.5 = 83.9 -->
+          <circle id="donut-male" cx="40" cy="40" r="30" fill="none"
+            stroke="var(--blue)" stroke-width="14"
+            stroke-dasharray="104.6 188.5"
+            stroke-dashoffset="47.1"
+            stroke-linecap="butt" transform="rotate(-90 40 40)"/>
+          <circle id="donut-female" cx="40" cy="40" r="30" fill="none"
+            stroke="var(--teal)" stroke-width="14"
+            stroke-dasharray="83.9 188.5"
+            stroke-dashoffset="-41.5"
+            stroke-linecap="butt" transform="rotate(-90 40 40)"/>
+          <text x="40" y="37" text-anchor="middle" font-size="13" font-weight="700" fill="var(--fg)" font-family="Inter,sans-serif">119</text>
+          <text x="40" y="51" text-anchor="middle" font-size="8" fill="var(--fg-3)" font-family="Inter,sans-serif">staff</text>
+        </svg>
+        <div class="donut-legend">
+          <div class="leg-row">
+            <div class="leg-dot" style="background:var(--blue)"></div>
+            <span class="leg-label">Male</span>
+            <span class="leg-val" style="margin-left:12px;">66</span>
+          </div>
+          <div class="leg-row">
+            <div class="leg-dot" style="background:var(--teal)"></div>
+            <span class="leg-label">Female</span>
+            <span class="leg-val" style="margin-left:12px;">53</span>
+          </div>
+          <div style="margin-top:4px;padding-top:8px;border-top:1px solid var(--border);">
+            <div class="leg-row">
+              <span style="font-size:11px;color:var(--fg-3);">Ratio M:F</span>
+              <span style="font-size:12px;font-weight:600;margin-left:auto;">55 : 45</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ── JOINING TREND ── -->
+<p class="section-label">Hiring Trend</p>
+<div class="card">
+  <div class="card-hd">
+    <span class="card-title">Staff Joined by Year</span>
+    <span class="card-count">1999 – 2026</span>
+  </div>
+  <div style="overflow-x:auto;">
+    <svg id="trend-svg" class="trend-svg" height="120" style="min-width:600px;display:block;"></svg>
+  </div>
+</div>
+
+<!-- ── DESIGNATIONS + SOCIAL ── -->
+<p class="section-label">Composition</p>
+<div class="g2">
+
+  <div class="card">
+    <div class="card-hd">
+      <span class="card-title">Top Designations</span>
+      <span class="card-count">40 total</span>
+    </div>
+    <div class="bar-list" id="desig-bars"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-hd">
+      <span class="card-title">Social Category</span>
+    </div>
+    <div class="bar-list" id="cat-bars"></div>
+    <div style="margin-top:16px;padding-top:14px;border-top:1px solid var(--border);">
+      <div class="card-title" style="margin-bottom:10px;font-size:13px;">Qualification Levels</div>
+      <div class="chips">
+        <span class="chip">10th</span><span class="chip">12th</span>
+        <span class="chip">UG</span><span class="chip">PG</span>
+        <span class="chip">Doctorate</span><span class="chip">Others</span>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ── RECENT EMPLOYEES ── -->
+<p class="section-label">Recent Staff (2026 Joiners)</p>
+<div class="card" style="overflow-x:auto;">
+  <table class="emp-table" id="emp-table">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>ID</th>
+        <th>Department</th>
+        <th>Designation</th>
+        <th>Role</th>
+        <th>Gender</th>
+      </tr>
+    </thead>
+    <tbody id="emp-body"></tbody>
+  </table>
+</div>
+
+<!-- ── BIOMETRIC ATTENDANCE ── -->
+<p class="section-label">Biometric Attendance · November 2026</p>
+
+<div class="stat-row">
+  <div class="stat">
+    <div class="stat-ic ic-g"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div>
+    <div class="stat-n">60</div><div class="stat-l">Present · avg/day</div>
+  </div>
+  <div class="stat">
+    <div class="stat-ic ic-o"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg></div>
+    <div class="stat-n">37</div><div class="stat-l">Half Day · avg/day</div>
+  </div>
+  <div class="stat">
+    <div class="stat-ic ic-pk"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg></div>
+    <div class="stat-n">21</div><div class="stat-l">Absent · avg/day</div>
+  </div>
+  <div class="stat">
+    <div class="stat-ic" style="background:rgba(255,100,0,0.12);color:#FF6400"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67V7z"/></svg></div>
+    <div class="stat-n">59</div><div class="stat-l">Late Arrivals · avg/day</div>
+  </div>
+  <div class="stat">
+    <div class="stat-ic ic-b"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M17 1H7c-1.1 0-2 .9-2 2v18c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2V3c0-1.1-.9-2-2-2zm0 18H7V5h10v14z"/></svg></div>
+    <div class="stat-n">313</div><div class="stat-l">Biometric Punches</div>
+  </div>
+  <div class="stat">
+    <div class="stat-ic ic-t"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg></div>
+    <div class="stat-n">4</div><div class="stat-l">Active Devices</div>
+  </div>
+</div>
+
+<div class="g2" style="margin-top:10px;">
+
+  <!-- Daily breakdown -->
+  <div class="card">
+    <div class="card-hd">
+      <span class="card-title">Daily Attendance Breakdown</span>
+      <span class="card-count">Nov 1–4</span>
+    </div>
+    <div style="display:flex;gap:14px;flex-wrap:wrap;margin-bottom:14px;">
+      <div style="display:flex;align-items:center;gap:5px;"><div style="width:10px;height:10px;border-radius:2px;background:var(--green);"></div><span style="font-size:11px;color:var(--fg-3);">Present</span></div>
+      <div style="display:flex;align-items:center;gap:5px;"><div style="width:10px;height:10px;border-radius:2px;background:var(--orange);"></div><span style="font-size:11px;color:var(--fg-3);">Half Day</span></div>
+      <div style="display:flex;align-items:center;gap:5px;"><div style="width:10px;height:10px;border-radius:2px;background:var(--pink);"></div><span style="font-size:11px;color:var(--fg-3);">Absent</span></div>
+      <div style="display:flex;align-items:center;gap:5px;"><div style="width:10px;height:10px;border-radius:2px;background:var(--surface-2);border:1px solid var(--border);"></div><span style="font-size:11px;color:var(--fg-3);">Weekly Off</span></div>
+    </div>
+    <div id="att-stacked"></div>
+
+    <div style="margin-top:16px;padding-top:14px;border-top:1px solid var(--border);">
+      <div class="card-title" style="font-size:13px;margin-bottom:12px;">Late Arrival Rate</div>
+      <div style="display:flex;flex-direction:column;gap:8px;" id="late-bars"></div>
+      <div style="margin-top:10px;font-size:11px;color:var(--fg-3);display:flex;gap:5px;align-items:center;">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" style="color:var(--orange);flex-shrink:0;"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+        Late = biometric check-in after scheduled shift start
+      </div>
+    </div>
+  </div>
+
+  <div style="display:flex;flex-direction:column;gap:10px;">
+
+    <!-- Device usage -->
+    <div class="card">
+      <div class="card-hd">
+        <span class="card-title">Device Usage</span>
+        <span class="card-count">Nov 2–4</span>
+      </div>
+      <div class="bar-list" id="device-bars"></div>
+      <div style="margin-top:14px;padding-top:12px;border-top:1px solid var(--border);">
+        <div style="font-size:11px;color:var(--fg-3);font-weight:600;letter-spacing:0.04em;text-transform:uppercase;margin-bottom:8px;">Device Registry</div>
+        <div id="device-registry"></div>
+      </div>
+    </div>
+
+    <!-- Absent both days -->
+    <div class="card">
+      <div class="card-hd">
+        <span class="card-title">Absent Both Days (Nov 2–3)</span>
+        <span class="card-count">8 staff</span>
+      </div>
+      <div id="absent-list"></div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ── EMPLOYEE ATTENDANCE (Nov 4) ── -->
+<p class="section-label">Today's Attendance Detail · 4 Nov 2026</p>
+
+<div class="stat-row">
+  <div class="stat">
+    <div class="stat-ic ic-g"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div>
+    <div class="stat-n">59</div><div class="stat-l">Present (Full)</div>
+  </div>
+  <div class="stat">
+    <div class="stat-ic ic-o"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg></div>
+    <div class="stat-n">39</div><div class="stat-l">Half Day</div>
+  </div>
+  <div class="stat">
+    <div class="stat-ic ic-pk"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg></div>
+    <div class="stat-n">21</div><div class="stat-l">Absent</div>
+  </div>
+  <div class="stat">
+    <div class="stat-ic" style="background:rgba(255,100,0,0.12);color:#FF6400"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67V7z"/></svg></div>
+    <div class="stat-n">53</div><div class="stat-l">Late Arrivals</div>
+  </div>
+  <div class="stat">
+    <div class="stat-ic ic-b"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M17 1H7c-1.1 0-2 .9-2 2v18c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2V3c0-1.1-.9-2-2-2zm0 18H7V5h10v14z"/></svg></div>
+    <div class="stat-n">18.5</div><div class="stat-l">Avg Late (mins)</div>
+  </div>
+  <div class="stat">
+    <div class="stat-ic ic-t"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg></div>
+    <div class="stat-n">104</div><div class="stat-l">Max Late (mins)</div>
+  </div>
+</div>
+
+<div class="g2" style="margin-top:10px;">
+  <div class="card">
+    <div class="card-hd">
+      <span class="card-title">Top Late Arrivals · Nov 4</span>
+      <span class="card-count">53 total late</span>
+    </div>
+    <div class="bar-list" id="late-detail-bars"></div>
+  </div>
+  <div class="card">
+    <div class="card-hd">
+      <span class="card-title">Device Activity · Nov 4</span>
+      <span class="card-count">103 biometric punches</span>
+    </div>
+    <div class="bar-list" id="device-nov4-bars"></div>
+    <div style="margin-top:14px;padding-top:12px;border-top:1px solid var(--border);">
+      <div style="font-size:11px;color:var(--fg-3);font-weight:600;letter-spacing:0.04em;text-transform:uppercase;margin-bottom:8px;">Punch Mode</div>
+      <div style="display:flex;gap:12px;flex-wrap:wrap;">
+        <div style="display:flex;align-items:center;gap:6px;background:var(--surface-2);border-radius:8px;padding:6px 12px;">
+          <div style="width:8px;height:8px;border-radius:50%;background:var(--green);"></div>
+          <span style="font-size:12px;font-weight:600;color:var(--fg);">103</span>
+          <span style="font-size:11px;color:var(--fg-3);">Biometric</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:6px;background:var(--surface-2);border-radius:8px;padding:6px 12px;">
+          <div style="width:8px;height:8px;border-radius:50%;background:var(--fg-3);"></div>
+          <span style="font-size:12px;font-weight:600;color:var(--fg);">16</span>
+          <span style="font-size:11px;color:var(--fg-3);">No Punch</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── WORKING TIME ── -->
+<p class="section-label">Working Time Report · Nov 1–4, 2026</p>
+
+<div class="stat-row">
+  <div class="stat">
+    <div class="stat-ic ic-b"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67V7z"/></svg></div>
+    <div class="stat-n">19.3</div><div class="stat-l">Avg Hours (4 days)</div>
+  </div>
+  <div class="stat">
+    <div class="stat-ic ic-g"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div>
+    <div class="stat-n">32.7</div><div class="stat-l">Max Hours (Hostel)</div>
+  </div>
+  <div class="stat">
+    <div class="stat-ic ic-o"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg></div>
+    <div class="stat-n">10</div><div class="stat-l">Zero Hours</div>
+  </div>
+  <div class="stat">
+    <div class="stat-ic ic-t"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 14l-5-5 1.41-1.41L12 14.17l7.59-7.59L21 8l-9 9z"/></svg></div>
+    <div class="stat-n">119</div><div class="stat-l">Employees Tracked</div>
+  </div>
+</div>
+
+<div class="g2" style="margin-top:10px;">
+  <div class="card">
+    <div class="card-hd">
+      <span class="card-title">Top 10 by Hours Worked</span>
+      <span class="card-count">Nov 1–4 total</span>
+    </div>
+    <div class="bar-list" id="top-hours-bars"></div>
+  </div>
+  <div class="card">
+    <div class="card-hd">
+      <span class="card-title">Dept Average Hours</span>
+      <span class="card-count">4-day period</span>
+    </div>
+    <div class="bar-list" id="dept-hours-bars"></div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  <span class="footer-txt">Entity: 693f884a77ec4d000eb9a03e</span>
+  <span class="footer-txt">Last API sync: 5 Nov 2026</span>
+  <span class="footer-txt">Record updated: 12 Aug 2026</span>
+</div>
+
+</div><!-- /page -->
+
+<script>
+/* ── Data ── */
+const deptData = [
+  ["PHARMACY",21],["CSE",17],["ADMISSION CELL",17],["AS",12],["MBA",9],
+  ["ADMIN",6],["IT",5],["ME",5],["ACCOUNTS",5],["EE",4],["MCA",3],
+  ["BCA",3],["LIBRARY",3],["REGISTRAR OFFICE",3],["IHM",1],["CE",1],
+  ["Accounts & HR",1],["Accounts",1],["PLACEMENT CELL",1],["HOSTEL",1]
+];
+const roleData = [
+  ["Teacher",77],["Other",14],["Manager",12],["Counselor",10],
+  ["Non-Teaching",6],["Support Staff",1]
+];
+const desigData = [
+  ["ASSISTANT PROFESSOR",52],["ASSOCIATE PROFESSOR",10],["COUNSELOR",7],
+  ["ACCOUNTS OFFICER",5],["LAB ASSISTANT",4],["LAB TECHNICIAN",4],
+  ["SR. ADMISSION MGR",3],["PROFESSOR",2],["ASST ADMIN OFFICER",2],
+  ["ASSISTANT REGISTRAR",2]
+];
+const catData = [
+  ["General",75],["OBC",33],["SC",5],["ST",1],["Others",1]
+];
+const yearData = [
+  [1999,2],[2000,1],[2001,2],[2002,1],[2003,3],[2004,1],[2005,2],[2006,2],
+  [2007,2],[2009,2],[2010,1],[2012,1],[2013,1],[2015,2],[2016,1],[2017,1],
+  [2018,2],[2019,2],[2021,6],[2022,10],[2023,9],[2024,16],[2025,18],[2026,31]
+];
+const recentEmps = [
+  ["Shadab Sarfaraj","1149","IT","ASSISTANT PROFESSOR","teacher","Male"],
+  ["Pooja Sharma","1162","CSE","ASSISTANT PROFESSOR","teacher","Female"],
+  ["Ravi Kumar","1178","ME","LAB ASSISTANT","non teaching","Male"],
+  ["Anjali Verma","1185","MBA","ASSOCIATE PROFESSOR","teacher","Female"],
+  ["Deepak Singh","1191","PHARMACY","ASSISTANT PROFESSOR","teacher","Male"],
+  ["Nisha Gupta","1197","AS","ASSISTANT PROFESSOR","teacher","Female"],
+  ["Mohit Yadav","1203","ADMISSION CELL","COUNSELOR","counselor","Male"],
+  ["Priya Jain","1209","ACCOUNTS","ACCOUNTS OFFICER","other","Female"],
+];
+
+/* ── Accent palette ── */
+const COLORS = ["#0066CC","#7B52EE","#FF9500","#28A745","#E91E8C","#00A693","#FF6347","#5856D6"];
+
+/* ── Render horizontal bars ── */
+function renderBars(containerId, data, maxOverride){
+  const el = document.getElementById(containerId);
+  if(!el) return;
+  const max = maxOverride || data[0][1];
+  el.innerHTML = data.map(([label,val],i)=>`
+    <div class="bar-row">
+      <div class="bar-label" title="${label}">${label}</div>
+      <div class="bar-track">
+        <div class="bar-fill" style="width:${(val/max*100).toFixed(1)}%;background:${COLORS[i%COLORS.length]};"></div>
+      </div>
+      <div class="bar-val">${val}</div>
+    </div>`).join('');
+}
+renderBars('dept-bars', deptData);
+renderBars('role-bars', roleData);
+renderBars('desig-bars', desigData);
+renderBars('cat-bars', catData);
+
+/* ── Biometric data ── */
+const attDays = [
+  {date:'01 Nov',present:0,  half:0,  absent:0,  woff:119, late:0},
+  {date:'02 Nov',present:59, half:41, absent:19, woff:0,   late:54},
+  {date:'03 Nov',present:60, half:36, absent:23, woff:0,   late:65},
+  {date:'04 Nov',present:62, half:35, absent:22, woff:0,   late:59},
+];
+const deviceUsage = [
+  ['Device 19 (Entry Main)',264],['Device 21 (Exit Gate)',115],
+  ['Device 23 (Block B)',22],['Device 20 (Gate 2)',12]
+];
+const deviceRegistry = [
+  ['BRC7192060470','19'],['BRC7192060828','21'],['BRC7192060866','22'],
+  ['AEXY215060912','23'],['CEXJ205160600','20']
+];
+const absentBoth = [
+  'Shahina Anjum','Tanya Singh','Bhanu P.S. Sagar','Sagrrika Gupta',
+  'Devendra Pratap Singh','Shipra Singh','Abhijit Kumar','Sujit Kumar Mishra'
+];
+
+// Stacked daily bars
+const attEl = document.getElementById('att-stacked');
+attEl.innerHTML = attDays.map(d => {
+  const total = 119;
+  const segs = d.woff === 119
+    ? `<div style="width:100%;height:20px;background:var(--surface-2);border-radius:5px;"></div>`
+    : `<div style="display:flex;width:100%;height:20px;border-radius:5px;overflow:hidden;">
+        ${d.present ? `<div style="width:${(d.present/total*100).toFixed(1)}%;background:var(--green);"></div>` : ''}
+        ${d.half    ? `<div style="width:${(d.half/total*100).toFixed(1)}%;background:var(--orange);"></div>` : ''}
+        ${d.absent  ? `<div style="width:${(d.absent/total*100).toFixed(1)}%;background:var(--pink);"></div>` : ''}
+       </div>`;
+  const nums = d.woff === 119
+    ? `<span style="font-size:11px;color:var(--fg-3);">119 weekly off</span>`
+    : `<span style="font-size:11px;color:var(--green);font-weight:600;">${d.present}P</span>
+       <span style="font-size:11px;color:var(--orange);font-weight:600;">${d.half}H</span>
+       <span style="font-size:11px;color:var(--pink);font-weight:600;">${d.absent}A</span>
+       ${d.late ? `<span style="font-size:11px;color:#FF6400;margin-left:4px;">⏰ ${d.late} late</span>` : ''}`;
+  return `<div style="margin-bottom:8px;">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px;">
+      <div style="font-size:12px;font-weight:500;color:var(--fg-2);width:60px;flex-shrink:0;">${d.date}</div>
+      <div style="flex:1;min-width:0;">${segs}</div>
+    </div>
+    <div style="display:flex;gap:8px;padding-left:70px;">${nums}</div>
+  </div>`;
+}).join('');
+
+// Late bars
+const lateEl = document.getElementById('late-bars');
+lateEl.innerHTML = attDays.filter(d=>d.late>0).map(d => {
+  const pct = (d.late/119*100).toFixed(0);
+  return `<div style="display:flex;align-items:center;gap:10px;">
+    <div style="font-size:12px;font-weight:500;color:var(--fg-2);width:60px;flex-shrink:0;">${d.date}</div>
+    <div style="flex:1;height:24px;background:var(--surface-2);border-radius:6px;overflow:hidden;">
+      <div style="width:${pct}%;height:100%;background:linear-gradient(90deg,#FF6B00,#FF9500);display:flex;align-items:center;padding-left:8px;">
+        <span style="font-size:11px;font-weight:600;color:white;white-space:nowrap;">${d.late} late</span>
+      </div>
+    </div>
+    <div style="font-size:12px;font-weight:500;color:var(--fg-3);width:32px;text-align:right;">${pct}%</div>
+  </div>`;
+}).join('');
+
+// Device usage bars
+renderBars('device-bars', deviceUsage, 264);
+
+// Device registry
+document.getElementById('device-registry').innerHTML = deviceRegistry.map(([serial,id]) =>
+  `<div style="display:flex;align-items:center;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border);">
+    <span style="font-size:12px;font-family:ui-monospace,monospace;color:var(--accent);font-weight:600;">${serial}</span>
+    <span style="font-size:11px;color:var(--fg-3);">ID ${id}</span>
+  </div>`
+).join('').replace(/border-bottom[^;]+;(?=<\/div>\s*$)/, 'border-bottom:none;');
+
+// Absent both days
+document.getElementById('absent-list').innerHTML = absentBoth.map(n =>
+  `<div style="display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);">
+    <span style="font-size:13px;font-weight:500;color:var(--fg);">${n}</span>
+    <span style="font-size:11px;font-weight:600;padding:2px 8px;border-radius:20px;background:var(--pink-s);color:var(--pink);">2 days</span>
+  </div>`
+).join('');
+
+/* ── Trend SVG ── */
+(function(){
+  const svg = document.getElementById('trend-svg');
+  const W = 800, H = 120, pad = {l:28,r:12,t:10,b:32};
+  const plotW = W - pad.l - pad.r;
+  const plotH = H - pad.t - pad.b;
+  const max = Math.max(...yearData.map(d=>d[1]));
+  const n = yearData.length;
+  const bw = plotW / n;
+
+  // Detect dark mode
+  const dark = window.matchMedia('(prefers-color-scheme:dark)').matches
+    || document.documentElement.dataset.theme === 'dark';
+
+  svg.setAttribute('viewBox',`0 0 ${W} ${H}`);
+
+  let bars = '';
+  let labels = '';
+  yearData.forEach(([yr,v],i) => {
+    const x = pad.l + i * bw;
+    const barH = (v/max) * plotH;
+    const y = pad.t + plotH - barH;
+    const isRecent = yr >= 2022;
+    const color = isRecent ? '#0066CC' : '#B0C8E8';
+    bars += `<rect x="${x+2}" y="${y}" width="${bw-4}" height="${barH}" rx="3" fill="${color}" opacity="${isRecent?1:0.7}"/>`;
+    if(yr % 3 === 0 || yr === 2026){
+      labels += `<text x="${x+bw/2}" y="${H-6}" text-anchor="middle" font-size="9" fill="var(--fg-3)" font-family="Inter,sans-serif">${yr}</text>`;
+    }
+    if(v >= 10){
+      labels += `<text x="${x+bw/2}" y="${y-4}" text-anchor="middle" font-size="9" font-weight="600" fill="${isRecent?'#0066CC':'var(--fg-3)'}" font-family="Inter,sans-serif">${v}</text>`;
+    }
+  });
+
+  // Y axis ticks
+  let yAxis = '';
+  [0, Math.round(max/2), max].forEach(tick => {
+    const ty = pad.t + plotH - (tick/max)*plotH;
+    yAxis += `<line x1="${pad.l}" x2="${W-pad.r}" y1="${ty}" y2="${ty}" stroke="var(--border)" stroke-width="1"/>`;
+    yAxis += `<text x="${pad.l-4}" y="${ty+3}" text-anchor="end" font-size="9" fill="var(--fg-3)" font-family="Inter,sans-serif">${tick}</text>`;
+  });
+
+  svg.innerHTML = yAxis + bars + labels;
+})();
+
+/* ── Attendance detail (Nov 4) ── */
+const lateDetailData = [
+  ['Mahendra Kumar Sonker',104],['Kanchan Jha',59],['Monika Bhati',44],
+  ['Nisha',44],['Poonam Pal',44],['Suvranshu S. Rath',43],
+  ['Bhishma Prasad Yadav',41],['Kanhaiya Kumar Pandey',41],
+  ['Abhinav Kumar Vats',39],['Rashmi Soni',37]
+];
+const deviceNov4 = [
+  ['Device 19 (Entry Main)',80],['Device 21 (Exit Gate)',18],
+  ['Device 20 (Gate 2)',3],['Device 23 (Block B)',2]
+];
+renderBars('late-detail-bars', lateDetailData, 104);
+renderBars('device-nov4-bars', deviceNov4, 80);
+
+/* ── Working time report ── */
+const topHoursData = [
+  ['AJAY KR. SHARMA (HOSTEL)',32.73],['Yogesh Kr. Sharma (ADMIN)',26.83],
+  ['VISHAL (PHARMACY)',25.08],['Shubham Kr. Sajan (BCA)',24.85],
+  ['Amit Kr. Yadav (ME)',24.75],['Bhure Singh (REGISTRAR)',24.68],
+  ['Shubh Kant Yadav (CE)',24.68],['Nempal Singh (AS)',24.52],
+  ['Kajal Chaudhary (PHARMACY)',24.4],['shyamvir (EE)',24.33]
+];
+const deptHoursData = [
+  ['HOSTEL',32.73],['CE',24.68],['BCA',23.88],['LIBRARY',23.68],
+  ['PLACEMENT CELL',23.28],['ME',23.08],['MCA',22.92],['MBA',20.66],
+  ['AS',20.61],['ACCOUNTS',20.34],['EE',20.18],['IT',19.92]
+];
+renderBars('top-hours-bars', topHoursData, 32.73);
+renderBars('dept-hours-bars', deptHoursData, 32.73);
+
+/* ── Employee table ── */
+const roleColors = {
+  teacher:['#EDF3FF','#0066CC'], manager:['#F0F7EE','#28A745'],
+  counselor:['#FFF4E6','#FF9500'], other:['#F5F0FF','#7B52EE'],
+  'non teaching':['#FEF0F4','#E91E8C'], 'supporting staff':['#E8FAF8','#00A693']
+};
+const tbody = document.getElementById('emp-body');
+tbody.innerHTML = recentEmps.map(([name,id,dept,desig,role,gender])=>{
+  const rc = roleColors[role.toLowerCase()] || ['#F2F2F7','#6E6E73'];
+  return `<tr>
+    <td>${name}<br><span class="emp-id">#${id}</span></td>
+    <td>${id}</td>
+    <td>${dept}</td>
+    <td>${desig}</td>
+    <td><span class="role-pill" style="background:${rc[0]};color:${rc[1]}">${role}</span></td>
+    <td>${gender}</td>
+  </tr>`;
+}).join('');
+</script>
