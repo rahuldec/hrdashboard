@@ -359,7 +359,7 @@ body{
     <div class="card">
       <div class="card-hd">
         <span class="card-title">Top Late Arrivals</span>
-        <span class="card-count" id="late-count">—</span>
+        <span style="display:flex;flex-direction:column;align-items:flex-end;gap:2px;"><span class="card-count" id="late-count">—</span><span style="font-size:10px;color:var(--fg-3);" id="late-day-label"></span></span>
       </div>
       <table class="gl-table"><tbody id="late-table"></tbody></table>
     </div>
@@ -795,12 +795,18 @@ function renderStackedChart(datt) {
   }).join('') : '<span style="font-size:13px;color:var(--fg-3);">No late arrivals in this period</span>';
 }
 
-function renderLateTable(lateToday) {
+function minsToHM(m) {
+  if(!m) return '0m';
+  const h = Math.floor(m/60), mm = m%60;
+  return h ? (mm ? `${h}h ${mm}m` : `${h}h`) : `${mm}m`;
+}
+function renderLateTable(lateToday, lastDayLabel) {
   document.getElementById('late-count').textContent = `${lateToday.length} total`;
+  if(lastDayLabel) document.getElementById('late-day-label').textContent = lastDayLabel + ' only';
   document.querySelector('#late-table').innerHTML = lateToday.slice(0,10).map(([name,mins],i)=>`
     <tr>
       <td style="color:var(--fg);font-weight:500;font-size:13px;">${i+1}. ${name}</td>
-      <td><span class="gl-pill" style="background:${mins>60?'var(--pink-s)':mins>30?'var(--orange-s)':'var(--surface-2)'};color:${mins>60?'var(--pink)':mins>30?'var(--orange)':'var(--fg-3)'};">${mins} min</span></td>
+      <td><span class="gl-pill" style="background:${mins>60?'var(--pink-s)':mins>30?'var(--orange-s)':'var(--surface-2)'};color:${mins>60?'var(--pink)':mins>30?'var(--orange)':'var(--fg-3)'};">${minsToHM(mins)}</span></td>
     </tr>`).join('');
 }
 
@@ -970,7 +976,7 @@ async function loadData(start, end) {
     renderHero(datt, wt);
     renderKPIs(emps, wt);
     renderStackedChart(datt);
-    renderLateTable(datt.lateToday);
+    renderLateTable(datt.lateToday, datt.lastDay?.label);
     renderAbsentList(datt.absentAll);
     renderBars('top-hours-bars', wt.topHours, null, '<span style="font-size:10px;color:var(--fg-3);">h</span>');
     renderBars('dept-hours-bars', wt.deptHours, null, '<span style="font-size:10px;color:var(--fg-3);">h</span>');
@@ -1109,7 +1115,7 @@ function renderModalBody(search='') {
   if(_modalActiveTab==='present') rows = (d.presentNames||[]).map(([n,dept])=>({ name:n, dept, badge:'', badgeColor:'' }));
   else if(_modalActiveTab==='half') rows = (d.halfNames||[]).map(([n,dept])=>({ name:n, dept, badge:'Half Day', badgeColor:'var(--orange)' }));
   else if(_modalActiveTab==='absent') rows = (d.absentNames||[]).map(([n,dept])=>({ name:n, dept, badge:'Absent', badgeColor:'var(--pink)' }));
-  else if(_modalActiveTab==='late') rows = (d.lateNames||[]).map(([n,dept,mins])=>({ name:n, dept, badge:`${mins} min late`, badgeColor: mins>60?'var(--pink)':mins>30?'var(--orange)':'#FF6400' }));
+  else if(_modalActiveTab==='late') rows = (d.lateNames||[]).sort((a,b)=>b[2]-a[2]).map(([n,dept,mins])=>({ name:n, dept, badge:`${minsToHM(mins)} late`, badgeColor: mins>60?'var(--pink)':mins>30?'var(--orange)':'#FF6400' }));
 
   if(search) rows = rows.filter(r=>r.name.toLowerCase().includes(search)||r.dept.toLowerCase().includes(search));
 
