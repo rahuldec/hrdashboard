@@ -246,6 +246,12 @@ body{
 @keyframes shimmer{0%{opacity:0.5}50%{opacity:1}100%{opacity:0.5}}
 
 /* ── Error banner ────────────────────────────────────────────────── */
+.eye-btn{background:var(--surface-2);border:1px solid var(--border);border-radius:8px;padding:3px 6px;cursor:pointer;color:var(--fg-3);display:flex;align-items:center;flex-shrink:0;transition:background .15s,color .15s;}
+.eye-btn:hover{background:var(--blue-s);color:var(--blue);}
+.att-tab{font-size:12px;font-weight:600;padding:5px 12px;border-radius:20px;border:1px solid var(--border);background:var(--surface-2);color:var(--fg-3);cursor:pointer;white-space:nowrap;transition:background .15s,color .15s;}
+.att-tab.active{border-color:transparent;color:#fff;}
+.att-emp-row{display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);}
+.att-emp-row:last-child{border-bottom:none;}
 .err-banner{
   background:var(--pink-s);border:1px solid rgba(233,30,140,0.2);
   border-radius:var(--r-sm);padding:12px 16px;
@@ -488,6 +494,27 @@ body{
 
 </div><!-- /page -->
 
+<!-- Attendance Detail Modal -->
+<div id="att-modal-overlay" style="display:none;position:fixed;inset:0;z-index:200;background:rgba(0,0,0,0.45);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);" onclick="closeAttModal(event)">
+  <div id="att-modal" style="position:absolute;bottom:0;left:0;right:0;max-height:82vh;background:var(--surface);border-radius:20px 20px 0 0;overflow:hidden;display:flex;flex-direction:column;">
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:16px 20px 0;flex-shrink:0;">
+      <div>
+        <div style="font-size:16px;font-weight:700;color:var(--fg);" id="att-modal-title">Attendance Detail</div>
+        <div style="font-size:12px;color:var(--fg-3);margin-top:2px;" id="att-modal-sub"></div>
+      </div>
+      <button onclick="closeAttModal()" style="background:var(--surface-2);border:none;border-radius:50%;width:30px;height:30px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--fg-3);font-size:18px;line-height:1;">&times;</button>
+    </div>
+    <!-- Search -->
+    <div style="padding:12px 20px 0;flex-shrink:0;">
+      <input id="att-modal-search" type="text" placeholder="Search name…" oninput="filterAttModal()" style="width:100%;box-sizing:border-box;padding:8px 12px;border-radius:10px;border:1px solid var(--border);background:var(--surface-2);color:var(--fg);font-size:13px;outline:none;">
+    </div>
+    <!-- Tabs -->
+    <div style="display:flex;gap:6px;padding:12px 20px 0;flex-shrink:0;overflow-x:auto;" id="att-modal-tabs"></div>
+    <!-- List -->
+    <div style="overflow-y:auto;padding:12px 20px 20px;flex:1;" id="att-modal-body"></div>
+  </div>
+</div>
+
 <script>
 /* ═══════════════════════════════════════════════════════════════════
    Config
@@ -608,13 +635,14 @@ function processDailyAtt(data) {
   data.forEach(emp => {
     (emp.attendanceData||[]).forEach(day => {
       const dt = day.date.substring(0,10);
-      if(!dayMap[dt]) dayMap[dt]={ present:0,half:0,absent:0,woff:0,late:0,dateObj: new Date(dt+'T12:00:00') };
+      if(!dayMap[dt]) dayMap[dt]={ present:0,half:0,absent:0,woff:0,late:0,dateObj: new Date(dt+'T12:00:00'),presentNames:[],halfNames:[],absentNames:[],lateNames:[] };
       const v = day.value;
-      if(v==='present') dayMap[dt].present++;
-      else if(v==='half_day') dayMap[dt].half++;
-      else if(v==='absent') dayMap[dt].absent++;
+      const info = [emp.employeeName, emp.department||''];
+      if(v==='present'){ dayMap[dt].present++; dayMap[dt].presentNames.push(info); }
+      else if(v==='half_day'){ dayMap[dt].half++; dayMap[dt].halfNames.push(info); }
+      else if(v==='absent'){ dayMap[dt].absent++; dayMap[dt].absentNames.push(info); }
       else if(v==='weekly_off') dayMap[dt].woff++;
-      if(day.lateArrival) dayMap[dt].late++;
+      if(day.lateArrival){ dayMap[dt].late++; dayMap[dt].lateNames.push([emp.employeeName, emp.department||'', day.lateArrivalMinutes||0]); }
     });
   });
   const days = Object.entries(dayMap).sort((a,b)=>a[0].localeCompare(b[0])).map(([dt,v])=>({...v,dt,label:fmtShort(v.dateObj)}));
@@ -724,8 +752,11 @@ function renderKPIs(emps, wt) {
   document.getElementById('kpi-joiners-sub').textContent = (pct2026>0?'↑':'↓') + Math.abs(pct2026) + '% vs 2025';
 }
 
+let _attDayData = {};
 function renderStackedChart(datt) {
   const { days, total } = datt;
+  _attDayData = {};
+  days.forEach(d => { _attDayData[d.dt] = d; });
   const el = document.getElementById('att-stacked');
   el.innerHTML = days.map(d => {
     if(d.woff >= total) return `<div style="margin-bottom:8px;"><div style="display:flex;align-items:center;gap:10px;margin-bottom:4px;"><div style="font-size:12px;font-weight:500;color:var(--fg-2);width:60px;flex-shrink:0;">${d.label}</div><div style="flex:1;min-width:0;height:20px;background:var(--surface-2);border-radius:5px;"></div></div><div style="display:flex;gap:8px;padding-left:70px;"><span style="font-size:11px;color:var(--fg-3);">${total} weekly off</span></div></div>`;
@@ -738,6 +769,9 @@ function renderStackedChart(datt) {
           ${d.half?`<div style="width:${hW}%;background:var(--orange);"></div>`:''}
           ${d.absent?`<div style="width:${aW}%;background:var(--pink);"></div>`:''}
         </div>
+        <button class="eye-btn" data-dt="${d.dt}" title="View employees" onclick="openAttModal('${d.dt}')">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+        </button>
       </div>
       <div style="display:flex;gap:8px;padding-left:70px;">
         <span style="font-size:11px;color:var(--green);font-weight:600;">${d.present}P</span>
@@ -1019,4 +1053,79 @@ document.getElementById('dpr-apply').addEventListener('click', () => {
   setDateInputs(start, end);
   loadData(start, end);
 })();
+
+/* ═══════════════════════════════════════════════════════════════════
+   Attendance Detail Modal
+════════════════════════════════════════════════════════════════════ */
+let _modalActiveTab = 'present';
+let _modalDayData = null;
+
+function openAttModal(dt) {
+  const d = _attDayData[dt];
+  if(!d) return;
+  _modalDayData = d;
+  _modalActiveTab = 'present';
+  document.getElementById('att-modal-title').textContent = `Attendance · ${d.label}`;
+  document.getElementById('att-modal-sub').textContent = `${d.present} present · ${d.half} half · ${d.absent} absent · ${d.late} late`;
+  document.getElementById('att-modal-search').value = '';
+  renderModalTabs();
+  renderModalBody();
+  document.getElementById('att-modal-overlay').style.display = '';
+  document.body.style.overflow = 'hidden';
+}
+
+function closeAttModal(e) {
+  if(e && e.target !== document.getElementById('att-modal-overlay') && e.type==='click') return;
+  document.getElementById('att-modal-overlay').style.display = 'none';
+  document.body.style.overflow = '';
+}
+
+function renderModalTabs() {
+  const d = _modalDayData;
+  const tabs = [
+    { key:'present', label:`Present (${d.present})`, color:'var(--green)' },
+    { key:'half',    label:`Half (${d.half})`,    color:'var(--orange)' },
+    { key:'absent',  label:`Absent (${d.absent})`,  color:'var(--pink)' },
+    { key:'late',    label:`Late (${d.late})`,    color:'#FF6400' },
+  ];
+  document.getElementById('att-modal-tabs').innerHTML = tabs.map(t=>`
+    <button class="att-tab${_modalActiveTab===t.key?' active':''}"
+      style="${_modalActiveTab===t.key?`background:${t.color};`:`--tab-hover:${t.color};`}"
+      onclick="switchAttTab('${t.key}','${t.color}')">${t.label}</button>
+  `).join('');
+}
+
+function switchAttTab(key, color) {
+  _modalActiveTab = key;
+  document.getElementById('att-modal-search').value = '';
+  renderModalTabs();
+  renderModalBody();
+}
+
+function filterAttModal() {
+  renderModalBody(document.getElementById('att-modal-search').value.trim().toLowerCase());
+}
+
+function renderModalBody(search='') {
+  const d = _modalDayData;
+  const el = document.getElementById('att-modal-body');
+  let rows = [];
+  if(_modalActiveTab==='present') rows = (d.presentNames||[]).map(([n,dept])=>({ name:n, dept, badge:'', badgeColor:'' }));
+  else if(_modalActiveTab==='half') rows = (d.halfNames||[]).map(([n,dept])=>({ name:n, dept, badge:'Half Day', badgeColor:'var(--orange)' }));
+  else if(_modalActiveTab==='absent') rows = (d.absentNames||[]).map(([n,dept])=>({ name:n, dept, badge:'Absent', badgeColor:'var(--pink)' }));
+  else if(_modalActiveTab==='late') rows = (d.lateNames||[]).map(([n,dept,mins])=>({ name:n, dept, badge:`${mins} min late`, badgeColor: mins>60?'var(--pink)':mins>30?'var(--orange)':'#FF6400' }));
+
+  if(search) rows = rows.filter(r=>r.name.toLowerCase().includes(search)||r.dept.toLowerCase().includes(search));
+
+  if(!rows.length){ el.innerHTML=`<div style="text-align:center;padding:32px 0;color:var(--fg-3);font-size:13px;">No records found</div>`; return; }
+
+  el.innerHTML = rows.map((r,i)=>`
+    <div class="att-emp-row">
+      <div>
+        <div style="font-size:13px;font-weight:600;color:var(--fg);">${r.name}</div>
+        <div style="font-size:11px;color:var(--fg-3);margin-top:1px;">${r.dept||'—'}</div>
+      </div>
+      ${r.badge?`<span style="font-size:11px;font-weight:600;padding:3px 10px;border-radius:20px;background:${r.badgeColor}22;color:${r.badgeColor};">${r.badge}</span>`:''}
+    </div>`).join('');
+}
 </script>
